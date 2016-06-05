@@ -1,0 +1,27 @@
+[
+  {
+    "name": "Quick Login",
+	"class":"glyphicon glyphicon-tasks",
+    "infotext": "Quick ",
+    "imagepic": "images/collectme.png",
+	   "href":"#/login"
+	
+	
+  },
+  {
+    "name": "About CollectME!",
+  "class":"glyphicon glyphicon-tasks",
+    "infotext": "about ",
+    "imagepic": "images/about.png",
+	"href":"#/about" 
+	
+  },
+  {
+    "name": "Contact",
+      "class":"glyphicon glyphicon-phone",
+    "infotext": "Contact",
+    "imagepic": "images/car.png",
+	"href":"#/contact"
+	
+  }
+]

@@ -1,0 +1,239 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Untitled Document</title>
+<script src="http://code.jquery.com/jquery-latest.js"></script>
+<script src="http://jquery-ui.googlecode.com/svn/tags/latest/ui/jquery.effects.core.js"></script>
+<script src="http://jquery-ui.googlecode.com/svn/tags/latest/ui/jquery.effects.slide.js"></script>
+ <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.3/jquery-ui.min.js"></script>
+
+
+<script type="text/javascript">
+
+
+
+$( document ).ready(function() {
+	
+var questions = [
+			"Choosing a career is straightforward.", 
+			"My Guidance Counsellor is the best person to tell me which career to pick.", 
+			"I should choose a career from a 'Best Careers' list.",
+			"Making a lot of money will make me happy.",
+			"Once I choose a career, I'll be stuck with it for life.",
+			"If my friends are happy choosing a particular occupation, chances are I will be too.",
+			"I should choose my future 3rd level course / career according to what the people",
+			"who know me best - my parents/guardians, expect me to do.",
+			"I should choose a career based on the best course or college I can get into.",
+			"Career tests can tell me exactly what is right for me.",
+			"I should select careers from those that are highest paying.",
+			"I don't need help from anyone in order to choose what I want.",
+			"There is very little I can learn about an occupation without trying it out.",
+			"If I change career, everything I have learnt will go to waste.",
+			"There is one perfect career for me.",
+			"It's best to decide when I'm older – something interesting is sure to come along.",
+			"Choosing a career is something you do after school.",
+			"Most people know what career they want before they leave school.",
+			"I should choose a career based on the subjects I get the best results in.",
+			"It is best to choose one career path now and stick to it.",
+			"I don't think any career would suit me.",
+			"You need to be a certain personality type for most careers.",
+			"The college course I choose must lead me directly into my career choice."
+];
+var count = 0;
+var newcount;
+var yeah = 0;
+var nay = 0;
+var $questionText = $('#questionText');
+var $answerDiv = $('#answerDiv');
+//$questionText.html(questions[count]);
+
+$('#start').click(function(){
+	//count++;
+	newcount = count+1;
+	$('#true').hide( "explode", {pieces:22 }, 200 );
+	$answerDiv.html("Question "+newcount+" of "+questions.length);
+	$questionText.html(questions[count]);
+	$('#start').hide();
+	$('#true').fadeIn('2000');
+	$('#false').fadeIn('2000');
+	
+	count++;
+	
+	});
+
+
+
+$('#false').click(function(){
+	$('#false').hide( "explode", {pieces:22 }, 200 );
+	count++;
+	$questionText.toggle( "slide" );
+	$questionText.html(questions[newcount]);
+	//alert(count);
+	$('#false').fadeIn('2000');
+	newcount = count;
+	$answerDiv.html("Question "+newcount+" of "+questions.length);
+	if(count >= questions.length+1){
+		
+	count = count-1;	
+	$questionText.html("<p class='ended'>Your final score is "+ yeah+" out of "+questions.length+" </p>");
+	$('#tfBtns').hide();
+
+	}
+	$questionText.show('slide',{direction:'right'},500);
+	});
+
+$('#true').click(function(){
+	$('#true').hide( "explode", {pieces:22 }, 200 );
+	count++;
+	yeah++;		
+	$questionText.toggle( "slide" );
+	$questionText.html(questions[newcount]);
+	//alert(count);
+	newcount=count;
+	$('#true').fadeIn('2000');
+	$answerDiv.html("Question "+newcount+" of "+questions.length);
+	
+	if(count >= questions.length+1){
+	count = count;	
+	
+	$questionText.html("<p class='ended'>Your final score is "+ yeah+" out of "+questions.length+" </p>");
+	$('#tfBtns').hide();
+
+	}
+
+	$questionText.show('slide',{direction:'right'},500);
+	});
+
+
+
+
+	
+});
+
+</script>
+<style type="text/css">
+.ended{
+    color: red;
+    font-size: 30px;
+    line-height: 62px;
+    text-align: center;
+}
+#questionWrapper {
+  width: 500px;
+  height: auto;
+  padding: 5px;
+  float: left;
+  border-radius: 5px;
+   font-family: Arial, Helvetica, sans-serif;
+  color: #666666;
+  font-size: 14px;
+  line-height: 24px;
+}
+#questionText2{
+
+  font-size: 22px;
+  height: 120px;
+  color: #666;
+  padding: 30px;
+  padding-bottom: 30px;
+  border: 1px solid lightgray;
+  border-radius: 5px;
+  box-shadow: 3px 3px 30px 1px lightgray inset;
+}
+#tfBtns{
+	text-align:center;	
+	display:block;
+	float:left;
+	text-align:center;
+	margin-top:10px;
+
+}
+
+#start{
+	width:80px;
+	height:20px;
+	float:left;
+	
+	padding:5px;
+	padding-bottom:8px;
+	text-align:center;
+	background:#039;
+	color:white;
+	margin:10px;
+	cursor:pointer;
+	font-family:Arial, Helvetica, sans-serif
+}
+#true{
+	width:80px;
+	height:20px;
+	float:left;
+	display:none;
+	padding:5px;
+	padding-bottom:8px;
+	text-align:center;
+	background:#039;
+	color:white;
+	margin:10px;
+	cursor:pointer;
+	font-family:Arial, Helvetica, sans-serif
+}
+#false{
+		width:80px;
+	height:20px;
+	display:none;
+	float:left;
+	padding:5px;
+	padding-bottom:8px;
+	text-align:center;
+	background:#039;
+	color:white;
+	margin:10px;
+	cursor:pointer;
+	font-family:Arial, Helvetica, sans-serif
+}
+#suBtn{
+clear:both;	
+text-align:center;
+}
+#answerDiv{
+  width: 100%;
+  background: lightcoral;
+  height: 30px;
+  text-align: right;
+  font-size: 20px;
+  clear: both;
+  padding: 10px;
+		
+}
+</style>
+</head>
+
+<body onload="myFunction()">
+<div id="questionWrapper"  >
+<h2>Career Awareness</h2>
+<p>Few of us think very far ahead about our lives.
+Nonetheless, it's worth noting that you are
+likely to be working for at least 40 to 50 years.
+That means you will probably be retiring from
+paid work around 2060!
+What will the world be like then? How will your
+working career influence other aspects of
+your life? What preparations can you make to
+help you along your journey? Given that we
+rarely consider these questions, it's worthwhile
+giving the exercise that follows your full
+attention.</p>
+    <div id="questionText2"><span id="questionText">  Click Start to begin  
+    </span></div>
+    <div id="start" onclick="start()">Start</div>
+    <div id="tfBtns">
+    <div id="true"  onmouseover="$(this).css('opacity','0.8');" onmouseout="$(this).css('opacity','1');" onclick="trueBtn()">Yes</div>
+    <div id="false"  onmouseover="$(this).css('opacity','0.8');" onmouseout="$(this).css('opacity','1');">No</div>
+    </div>
+ <div id="answerDiv"></div>
+</div>
+</body>
+
+ 
+</html>

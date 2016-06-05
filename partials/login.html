@@ -1,0 +1,50 @@
+
+
+
+     <!-- Page Content -->
+    <div class="container">
+Lat is: {{position.coords.latitude}}
+<br>
+Long is: {{position.coords.longitude}}
+
+  
+        <!-- Marketing Icons Section -->
+        <div class="row" >
+            <div class="col-lg-12">
+                <h3 class="page-header">
+                   CollectMe Please! <br><p ng=bind="firstName"></p>
+                </h3>
+
+    
+        <!-- this is the login controller -->
+        <div class="col-lg-2">
+        <form class="form-auth" ng-submit="login()">
+            <h2>Log In</h2>
+            <p class="text-warning">{{error_message}}</p>
+            <input type="email" ng-model="user.email" placeholder="email" class="form-control"><br>
+            <input type="password" ng-model="user.password" placeholder="Password" class="form-control"><br>
+            <input type="submit" value="Log in" class="btn btn-primary" />
+        </form>
+      
+       <!-- list out the name and location -->
+       <ul class="lists" ng-repeat=" x in loginData ">
+        <li> <strong>Name:</strong> {{x.fname}}</li>
+         <li ng-show="{{x.parent}}"><strong>Role:</strong> Parent</li>
+        </ul>
+        </div>
+       
+   
+
+ <div class="col-lg-10">
+        <!-- displays the map -->
+        <div id="map"></div>    <br>   
+	         <div id="repeat" ng-repeat="marker in markers | orderBy : 'title'">
+	            <a id="country_container" href="#" ng-click="openInfoWindow($event, marker)">
+	            <label id="names" >{{marker.title}}</label></a>
+	        </div>
+     
+
+
+</div>
+</div>
+</div>
