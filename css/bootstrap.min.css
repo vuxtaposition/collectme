@@ -11,8 +11,56 @@ html {
     -ms-text-size-adjust: 100%
 }
 body {
-    margin: 0
+    margin: 0;
+    background:#eee;
 }
+#detailsPane{
+    background: #5E88A0;
+    border-radius: 5px;
+    color: white;
+    line-height: 1.42857;
+    font-weight: 400;
+    font-family: helvetica;
+    padding: 20px;
+    font-size: 18px;
+}
+#mapWrappers{
+    background: lightgray;
+    border: 5px solid #5E88A0;
+    border-radius: 10px;
+    padding: 20px;
+    margin-left: 20px;
+  
+}
+#mapWrappers2{
+    background: lightgray;
+    border: 5px solid #5E88A0;
+    border-radius: 10px;
+    padding: 20px;
+    margin-left: 20px;
+  
+}
+#picRow h3{
+    z-index: 999;
+    position: absolute;
+    top: px;
+    left: 30%;
+    font-size: 900%;
+    color: brown;
+    background: none;
+    
+}
+@media only screen and (min-width:480px) and (max-width:867px) {
+    #picRow h3{
+    font-size: 500%;
+}
+    }
+@media only screen and (max-width:479px) {
+    #picRow h3{
+    font-size: 400%;
+}
+    }
+
 article,
 aside,
 details,
@@ -31,6 +79,10 @@ summary {
 ul li{
     list-style: none;
 }
+.intro-header{
+  
+        
+    }
 #logout{
     display:none;
 }
@@ -212,6 +264,7 @@ margin-bottom:60px;
         -webkit-box-shadow: none!important;
         box-shadow: none!important
     }
+
     a,
     a:visited {
         text-decoration: underline
@@ -3077,7 +3130,7 @@ textarea.form-group-lg .form-control {
     .form-horizontal .control-label {
         padding-top: 7px;
         margin-bottom: 0;
-        text-align: right
+        text-align: left
     }
 }
 .form-horizontal .has-feedback .form-control-feedback {
@@ -4600,11 +4653,11 @@ fieldset[disabled] .navbar-default .btn-link:hover {
     color: #ccc
 }
 .navbar-inverse {
-    background-color: #222;
-    border-color: #080808
+    background-color: #5E88A0;
+    border-color: lightblue;
 }
 .navbar-inverse .navbar-brand {
-    color: #9d9d9d
+    color: white;
 }
 .navbar-inverse .navbar-brand:focus,
 .navbar-inverse .navbar-brand:hover {
@@ -4615,7 +4668,7 @@ fieldset[disabled] .navbar-default .btn-link:hover {
     color: #9d9d9d
 }
 .navbar-inverse .navbar-nav>li>a {
-    color: #9d9d9d
+    color: white;
 }
 .navbar-inverse .navbar-nav>li>a:focus,
 .navbar-inverse .navbar-nav>li>a:hover {
@@ -5648,9 +5701,10 @@ a.list-group-item-danger.active:hover {
 }
 .panel-default>.panel-heading {
     color: white;
-    background-color:#474747;
+    background-color:#5E88A0;
     border-color: #ddd;
-    border-radius: 5px;
+     border-top-left-radius: 5px;
+     border-top-right-radius: 5px;
 }
 .panel-default>.panel-heading+.panel-collapse>.panel-body {
     border-top-color: #ddd

@@ -242,3 +242,85 @@ alanApp.controller('ContactController', function ($scope, $http) {
 
   */
 */
+
+
+
+
+
+
+
+
+//header
+  
+     <header class="intro-header">
+        <div class="row" style="text-align:center;">
+            <img src="images/header.png" width="100%" />
+        </div>
+    </header> 
+   
+<br><br>
+
+      <div class="container">
+            <div class="col-md-4" ng-repeat="heads in heading"  >
+                <div class="panel panel-default">
+                    <div class="panel-heading" >
+                        <h4><i class="{{heads.class}}"></i> {{heads.name}}</h4>
+                    </div>
+                    <div class="panel-body" style="text-align:center;">
+                      
+                       <a href="{{heads.href}}" > <img ng-src="{{heads.imagepic}}" alt="main image" width="70%"/></a>
+                      
+                    </div>
+                </div>
+            </div>
+           
+            
+        
+        <!-- /.row -->
+
+       
+
+        <!-- Features Section -->
+        <div class="row">
+         
+            <div class="col-lg-12">
+                <h2 class="page-header">Family Matters</h2>
+            </div>
+            <div class="col-md-6">
+              bla
+            </div>
+            <div class="col-md-6">
+           bla
+            </div>
+        </div>
+
+        <!-- /.row -->
+</div>
+        <hr>
+
+           
+        <!-- /.row -->
+         
+
+        <hr>
+
+        <!-- Footer -->
+        <footer>
+               <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <p>Copyright &copy; Collect Me!</p>
+                </div>
+            </div>
+        </div>
+        </footer>
+
+    </div>
+    <!-- /.container -->
+     <!-- jQuery -->
+    <script src="js/jquery.js"></script>
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="js/bootstrap.min.js"></script>
+
+    <!-- Script to Activate the Carousel -->

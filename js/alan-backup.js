@@ -13,14 +13,12 @@ alanApp.controller('alanCtrl', function($scope, $http) {
         place: 'College Green',
         desc: 'A country of culture and tradition!',
         lat: 53.344316,
-        long: -6.260109,
-        icon:'images/assets/minor.png'
+        long: -6.260109
     }, {
         place: 'Trinity College',
         desc: 'College in Ireland',
         lat: 53.344066,
-        long: -6.255989,
-        icon:'images/assets/minor.png'
+        long: -6.255989
     }];
 
 //get json data to display on homepage
@@ -118,100 +116,18 @@ alanApp.controller('alanCtrl', function($scope, $http) {
                             console.log("you got "+data[c].email);
                             
 
-                           locations.push( {place: 'Drogheda',desc: data[c].email,lat: data[c].latitude,long: data[c].longitude,icon:data[c].icon});
+                           locations.push( {place: 'Location',desc: data[c].email,lat: data[c].latitude,long: -data[c].longitude});
 
                         }
-                // checking to see if I have results from positions table
+                
                         for(var i = 0;i < locations.length;i++){
                             console.log(locations[i]);
                         }
 
-
-// draw map for parent  ************ *****************
-
-
-
-  // setting the currentuser
-        $('#mapWrappers').is(":visible"); {
-            $scope.currentUser = 1;
-
-            // Add users location to array
-
-            locations.push({
-                'place': 'Your Location',
-                'desc': 'You are Here!',
-                'lat': latt,
-                'long': longtit,
-                'icon': 'images/assets/me.png'
-            });
-
-
-
-            //load map
-            var mapOptions = {
-                zoom: 16,
-                center: new google.maps.LatLng(latt, longtit),
-                mapTypeId: google.maps.MapTypeId.ROADMAP
-            }
-
-            $scope.map = new google.maps.Map(document.getElementById('map'), mapOptions);
-            google.maps.event.trigger($scope.map, 'resize');
-            // set markers array
-            $scope.markers = [];
-
-            var infoWindow = new google.maps.InfoWindow();
-            //create markers              
-            var createMarker = function(info) {
-
-                    var marker = new google.maps.Marker({
-                        map: $scope.map,
-                        position: new google.maps.LatLng(info.lat, info.long),
-                        title: info.place,
-                        icon: info.icon
-
-                    });
-                    marker.content = '<div class="infoWindowContent">' + info.desc + '<br />' + info.lat + ' E,' + info.long + ' N, </div>';
-                    // add popups boxes to map                 
-                    google.maps.event.addListener(marker, 'click', function() {
-                        infoWindow.setContent('<h2>' + marker.title + '</h2>' +
-                            marker.content);
-                        infoWindow.open($scope.map, marker);
-                    });
-
-
-                    $scope.markers.push(marker);
-
-
-                }
-                // create array of city markers             
-            for (i = 0; i < locations.length; i++) {
-                //checking markers
-                console.log("Is there buttons for? -  "+locations[i].place);
-
-                createMarker(locations[i]);
-            }
-
-            $scope.openInfoWindow = function(e, selectedMarker) {
-                    e.preventDefault();
-                    google.maps.event.trigger(selectedMarker, 'click');
-                }
-                // trigger resize  google maps   (This is a fix for a bug)
-            google.maps.event.addListenerOnce($scope.map, 'idle', function() {
-                google.maps.event.trigger(map, 'resize');
-            });
-
-        };
-
-
-// end draw map for paret    ************ *****************
-
                     });
 
 
 
-  for(var i = 0;i < locations.length;i++){
-                            console.log(locations[i]);
-                        }
 
 
 
@@ -272,12 +188,7 @@ alanApp.controller('alanCtrl', function($scope, $http) {
 
 
         $scope.runChildMap = function() {
-   locations.push({
-                'place': 'Your Location',
-                'desc': 'You are Here!',
-                'lat': latt,
-                'long': longtit
-            });
+
                 //load map
                 var mapOptions = {
                     zoom: 14,
@@ -298,9 +209,7 @@ alanApp.controller('alanCtrl', function($scope, $http) {
                             map: $scope.map2,
                             position: new google.maps.LatLng(info.lat, info.long),
                             title: info.place
-                            
                         });
-                        console.log("NO MARKER !!!!!");
                         marker.content = '<div class="infoWindowContent">' + info.desc + '<br />' + info.lat + ' E,' + info.long + ' N, </div>';
                         // add popups boxes to map                 
                         google.maps.event.addListener(marker, 'click', function() {
@@ -395,6 +304,73 @@ alanApp.controller('alanCtrl', function($scope, $http) {
         });
 
 
+
+
+        // setting the currentuser
+        $('#mapWrappers').is(":visible"); {
+            $scope.currentUser = 1;
+
+            // Add users location to array
+
+            locations.push({
+                'place': 'location',
+                'desc': 'You are Here!',
+                'lat': latt,
+                'long': longtit
+            });
+
+
+
+            //load map
+            var mapOptions = {
+                zoom: 14,
+                center: new google.maps.LatLng(latt, longtit),
+                mapTypeId: google.maps.MapTypeId.ROADMAP
+            }
+
+            $scope.map = new google.maps.Map(document.getElementById('map'), mapOptions);
+            google.maps.event.trigger($scope.map, 'resize');
+            // set markers array
+            $scope.markers = [];
+
+            var infoWindow = new google.maps.InfoWindow();
+            //create markers              
+            var createMarker = function(info) {
+
+                    var marker = new google.maps.Marker({
+                        map: $scope.map,
+                        position: new google.maps.LatLng(info.lat, info.long),
+                        title: info.place
+                    });
+                    marker.content = '<div class="infoWindowContent">' + info.desc + '<br />' + info.lat + ' E,' + info.long + ' N, </div>';
+                    // add popups boxes to map                 
+                    google.maps.event.addListener(marker, 'click', function() {
+                        infoWindow.setContent('<h2>' + marker.title + '</h2>' +
+                            marker.content);
+                        infoWindow.open($scope.map, marker);
+                    });
+
+
+                    $scope.markers.push(marker);
+
+
+                }
+                // create array of city markers             
+            for (i = 0; i < locations.length; i++) {
+                createMarker(locations[i]);
+            }
+
+            $scope.openInfoWindow = function(e, selectedMarker) {
+                    e.preventDefault();
+                    google.maps.event.trigger(selectedMarker, 'click');
+                }
+                // trigger resize  google maps   (This is a fix for a bug)
+            google.maps.event.addListenerOnce($scope.map, 'idle', function() {
+                google.maps.event.trigger(map, 'resize');
+            });
+
+        };
+
     }
 
 
@@ -421,7 +397,7 @@ alanApp.config(function($routeProvider) {
             templateUrl: 'partials/login.html'
         })
         .when('/register', {
-            controller: 'registerCtrl',
+            controller: 'authController',
             templateUrl: 'partials/register.html'
         })
         .when('/collect', {
@@ -463,9 +439,58 @@ alanApp.controller('customers', function($scope, $http) {
 });
 
 
-// register controller 
+/*
 
-// end register controller
+// map controller
+
+
+
+          //Angular App Module and Controller
+        
+          alanApp.controller('MapController', function ($scope) {
+              alert("alan");
+              var mapOptions = {
+                  zoom: 16,
+                  center: new google.maps.LatLng(53.344066,-6.255989),
+                  mapTypeId: google.maps.MapTypeId.ROADMAP
+              }
+
+              $scope.map = new google.maps.Map(document.getElementById('map'), mapOptions);
+
+              $scope.markers = [];
+              
+              var infoWindow = new google.maps.InfoWindow();
+              
+              var createMarker = function (info){
+                  
+                  var marker = new google.maps.Marker({
+                      map: $scope.map,
+                      position: new google.maps.LatLng(info.lat, info.long),
+                      title: info.place
+                  });
+                  marker.content = '<div class="infoWindowContent">' + info.desc + '<br />' + info.lat + ' E,' + info.long +  ' N, </div>';
+                  
+                  google.maps.event.addListener(marker, 'click', function(){
+                      infoWindow.setContent('<h2>' + marker.title + '</h2>' + 
+                        marker.content);
+                      infoWindow.open($scope.map, marker);
+                  });
+                  
+                  $scope.markers.push(marker);
+                  
+              }  
+              
+              for (i = 0; i < locations.length; i++){
+                  createMarker(locations[i]);
+              }
+
+              $scope.openInfoWindow = function(e, selectedMarker){
+                  e.preventDefault();
+                  google.maps.event.trigger(selectedMarker, 'click');
+              }
+
+          });
+*/
 
 //Tabbs controller
 
@@ -530,13 +555,4 @@ alanApp.controller('ContactController', function($scope, $http) {
             $scope.result = 'bg-danger';
         }
     }
-});
-
-alanApp.controller('registerCtrl', function($scope) {
-
-      $scope.register = function() {
-    console.log($scope.user.parent+" "+$scope.user.fname+" "+$scope.user.email+" "+$scope.user.add1);
-    alert("workding");
-}
-
 });

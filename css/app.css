@@ -7,13 +7,17 @@
 .customerBlock{
     	float: left;
     	width: 23%;
-    	background: #eee;
+    	background: #5E88A0;
     	height: 300px;
     	padding: 10px;
     	border: 1px solid lightgray;
     	margin-left: 10px;
     	margin-right: 10px;
     	margin-bottom:20px;
+        color:white;
+}
+.headingcolor{
+    color:#40C4DD;
 }
 .custname{
 	float:left;
@@ -31,6 +35,13 @@
 #map{
     height:500px; 
     width:500px; 
+    margin:0 auto;
+/*    box-shadow: 3px 3px 10px gray;*/  
+    }
+    #map2{
+    height:500px; 
+    width:500px; 
+    margin:0 auto;
 /*    box-shadow: 3px 3px 10px gray;*/  
     }
 #repeat{ 
@@ -40,9 +51,9 @@
      margin: 8px 2px 2px 0px; 
      text-align: center; 
      width: 90px; 
-     padding: 5px; 
+     padding: 10px; 
      color: white; 
-     background-color: gray; 
+     background-color: #5E88A0; 
      font-size: 16px; 
      cursor: pointer;
      }

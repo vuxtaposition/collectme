@@ -3,28 +3,26 @@ include_once "../includes/myconnect2.php";
 $postdata = file_get_contents("php://input");
 $request = json_decode($postdata);
 $email = $request->email;
-$pass = $request->password;
-$parent = $request->parents;
 
 
         // query to display all the customers
-        $query = mysqli_query($link,"SELECT * FROM customers WHERE email = '$email' ");
+        $query = mysqli_query($link,"SELECT * FROM position WHERE email = '$email' ORDER BY dateIn DESC limit 3 ");
        $rows = mysqli_num_rows($query);
 
-       if($rows == 1){
+       if($rows > 1){
 
             $return_arr = Array();
                 while($row2 = mysqli_fetch_assoc($query)){   
 
-                     if($row2['email'] == $email && $row2['password'] == $pass ){
+                  
 
                      $return_arr[] = $row2;
-                 }
+               
             }
 
 	echo json_encode($return_arr); 
 	}else{
-echo "error";
+echo "error, I got no data";
 	}     
 
 ?>
