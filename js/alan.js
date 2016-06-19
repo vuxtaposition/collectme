@@ -1,3 +1,4 @@
+// some code snippets taken and modified from http://www.w3schools.com/googleapi/
 var alanApp = angular.module('alanApp', ['ngRoute']);
 
 var currentUser;
@@ -6,24 +7,12 @@ var currentUser;
 
 
 //alan controller
-alanApp.controller('alanCtrl', function($scope, $http) {
+alanApp.controller('alanCtrl', function($scope, $http, $timeout) {
 
-// object for locations
-    var locations = [{
-        place: 'College Green',
-        desc: 'A country of culture and tradition!',
-        lat: 53.344316,
-        long: -6.260109,
-        icon:'images/assets/minor.png'
-    }, {
-        place: 'Trinity College',
-        desc: 'College in Ireland',
-        lat: 53.344066,
-        long: -6.255989,
-        icon:'images/assets/minor.png'
-    }];
+    // object for locations
+    var locations = [];
 
-//get json data to display on homepage
+    //get json data to display on homepage
     $http.get('json/heading.json').success(function(data2) {
         $scope.heading = data2;
     });
@@ -42,242 +31,368 @@ alanApp.controller('alanCtrl', function($scope, $http) {
         });
     }
 
+
     // hide map to start
     $('#mapWrappers').hide();
+    $('#detailsPaneRight').hide();
     $('#mapWrappers2').hide();
+    
+
     //login section
     $scope.user = {
         username: '',
         password: '',
         parents: ''
     };
+   
+    //register
+
     //this is the main run function 
     $scope.login = function() {
+$scope.logHide = false;
+ $timeout($scope.login, 30000);
+        //set variables of current login              
+        var latt = $scope.position.coords.latitude;
+        var longtit = $scope.position.coords.longitude;
+
 
         //check if parent
 
-        $('#map').hide();
+    $('#map').hide();
 
-        //check user on database using a php page
-        var request = $http({
-            method: "POST",
-            url: "includes/login.php",
-            data: {
-                email: $scope.user.email,
-                password: $scope.user.password,
-                parents: $scope.user.parents
+    //check user on database using a php page
+    var request = $http({
+        method: "POST",
+        url: "includes/login.php",
+        data: {
+            email: $scope.user.email,
+            password: $scope.user.password,
+            parents: $scope.user.parents
 
-            },
-            headers: {
-                'Content-Type': 'application/x-www-form-urlencoded'
-            }
-        });
+        },
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded'
+        }
+    });
 
         //response from php               
-        request.success(function(data) {
-            $scope.loginData = data;
-            console.log("parents form = " + $scope.user.parents);
+    request.success(function(data) {
+        $scope.loginData = data;
+        console.log("parents form = " + $scope.user.parents);
 
-            //check if the emails and passwords match                    
-            for (var obj in data) {
-                //check parent
-                if (data[obj].email == $scope.user.email && data[obj].password == $scope.user.password && data[obj].parent == 1) {
+        //check if the emails and passwords match                    
+        for (var obj in data) {
+            //check parent
+            if (data[obj].email == $scope.user.email && data[obj].password == $scope.user.password && data[obj].parent == 1) {
 
-                    console.log("parents database = " + data[obj].parent);
-                    // show or hide map and forms
-                    $('.form-auth').hide();
-                    $('#mapWrappers').show();
-                    $('#map').show();
-                    $('#logout').show();
+                console.log("parents database = " + data[obj].parent);
+                // show or hide map and forms
+                $('.form-auth').hide();
+                $('#mapWrappers').show();
+                $('#map').show();
+                $('#logout').show();
+                 $('#detailsPaneRight').show();
 
 
+// post message   
 
-// get childs positions from database
+   var chat = $http({
+                    method: "POST",
+                    url: "includes/chat.php",
+                    data: {
+                        email: data[obj].email,
+                        altemail: data[obj].alt_email,
+                        msg: $scope.user.msg
 
-        var request2 = $http({
-                        method: "POST",
-                        url: "includes/getChildsLocation.php",
-                        data: {
-                            email: data[obj].alt_email
+                    },
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded'
+                    }
+                });
 
-                        },
-                        headers: {
-                            'Content-Type': 'application/x-www-form-urlencoded'
+                //response from php               
+                chat.success(function(data) {
+                    console.log("Chat has benn entered.."+data);
+                });
+
+
+// chat back from child
+    var chatBack = $http({
+                    method: "POST",
+                    url: "includes/chatBack.php",
+                    data: {                      
+                        altemail: data[obj].alt_email,                        
+                    },
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded'
+                    }
+                });
+
+                //response from php               
+                chatBack.success(function(data) {
+  // setting chat name                  
+$scope.altEmailName = data[obj].email.slice(0,-9);
+
+                    $scope.gotMessage = data;
+                    $scope.user.msg = "";
+                    console.log("This is all the datat "+data[obj].msg);
+
+         
+                });
+
+
+                // get childs positions from database
+
+    var request2 = $http({
+                    method: "POST",
+                    url: "includes/getChildsLocation.php",
+                    data: {
+                        email: data[obj].alt_email
+
+                    },
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded'
+                    }
+                });
+
+                //response from php               
+                request2.success(function(data) {
+                    $scope.childsCurrentLocation = data;
+                    console.log("Got the childs location");
+                    console.log(data);
+                    var ind = 0
+                    for (var c in $scope.childsCurrentLocation) {
+
+                        //testing for results;
+                        console.log("you got " + data[c].email);
+
+                        //  http://www.gps-coordinates.net/
+
+                        var latt = data[c].latitude;
+                        var longtit = data[c].longitude;
+                        var geocoder = new google.maps.Geocoder();
+                        var latLng = new google.maps.LatLng(latt, longtit);
+                        var loc = [];
+
+
+                        if (geocoder) {
+                            geocoder.geocode({
+                                'latLng': latLng
+                            }, function(results, status) {
+
+                                if (status == google.maps.GeocoderStatus.OK) {
+
+                                    console.log(results[0].formatted_address);
+                                    loc = results[0].formatted_address;
+
+                                    //add a list item to display address as a string  of current login   
+
+                                    //define current locations as text for GUI
+                                    if (ind == 0) {
+                                        ind = "Current location";
+                                    } else if (ind == 1) {
+                                        ind = "2nd last location";
+                                    } else if (ind == 2) {
+                                        ind = "3rd last location";
+                                    } else {
+                                        ind = ind;
+                                    }
+
+                                    $('.lists').append(data[c].email + '<br><li><strong>Address </strong><span class="cross">' + ind + '</span>' + results[0].formatted_address + '</li>');
+                                    ind++;
+
+                                    // hide span if it contains NaN as the text
+                                    $('.cross').each(function() {
+                                        if ($(this).text() == 'NaN') {
+                                            $(this).hide();
+                                        }
+                                    });
+
+
+                                } else {
+                                    console.log("Geocoding failed: " + status);
+                                }
+
+                            });
                         }
-                    });
 
-                    //response from php               
-                    request2.success(function(data) {
-                        $scope.childsCurrentLocation = data;
-                        console.log("Got the childs location");
-                        console.log(data);
+                        var str = data[c].email;
+                        str = str.substring(0, str.length - 9);
 
-                        for(var c in $scope.childsCurrentLocation){
+                        locations.push({
+                            place: str,
+                            desc: data[c].email,
+                            lat: data[c].latitude,
+                            long: data[c].longitude,
+                            icon: data[c].icon
+                        });
 
-                            //testing for results;
-                            console.log("you got "+data[c].email);
-                            
+                    }
+                    // checking to see if I have results from positions table
+                    for (var i = 0; i < locations.length; i++) {
+                        console.log(locations[i]);
+                    }
 
-                           locations.push( {place: 'Drogheda',desc: data[c].email,lat: data[c].latitude,long: data[c].longitude,icon:data[c].icon});
 
+                    // draw map for parent  ************ *****************
+
+//set variables of current login              
+                    var latt = $scope.position.coords.latitude;
+                    var longtit = $scope.position.coords.longitude;
+
+                    // setting the currentuser
+                    $('#mapWrappers').is(":visible"); {
+                        $scope.currentUser = 1;
+
+                        // Add users location to array
+
+
+                        locations.push({
+                            'place': 'Your Location',
+                            'desc': 'You are Here!',
+                            'lat': latt,
+                            'long': longtit,
+                            'icon': 'images/assets/me.png'
+                        });
+
+
+
+                        //load map
+                        var mapOptions = {
+                            zoom: 16,
+                            center: new google.maps.LatLng(latt, longtit),
+                            mapTypeId: google.maps.MapTypeId.ROADMAP
                         }
-                // checking to see if I have results from positions table
-                        for(var i = 0;i < locations.length;i++){
-                            console.log(locations[i]);
+
+                        $scope.map = new google.maps.Map(document.getElementById('map'), mapOptions);
+                        // helps the window to reload and display correctly
+                        google.maps.event.trigger($scope.map, 'resize');
+                        // set markers array
+                        $scope.markers = [];
+
+                        var infoWindow = new google.maps.InfoWindow();
+                        //create markers  
+
+                        var createMarker = function(info) {
+
+                                var marker = new google.maps.Marker({
+                                    map: $scope.map,
+                                    position: new google.maps.LatLng(info.lat, info.long),
+                                    title: info.place,
+                                    icon: info.icon
+
+                                });
+                                marker.content = '<div class="infoWindowContent">' + info.desc + '<br />' + info.lat + ' E,' + info.long + ' N, </div>';
+                                // add popups boxes to map                 
+                                google.maps.event.addListener(marker, 'click', function() {
+                                    infoWindow.setContent('<h2>' + marker.title + '</h2>' +
+                                        marker.content);
+                                    infoWindow.open($scope.map, marker);
+                                });
+
+
+                                $scope.markers.push(marker);
+
+
+                            }
+
+                            // only allow 4 objects in teh array at any time
+                            locations.slice(Math.max(locations.length - 5, 1));
+                            // create array of city markers             
+                        for (i = 0; i < locations.length; i++) {
+                            //checking markers
+                            console.log("locations " + locations[i].long);
+
+                            createMarker(locations[i]);
                         }
 
+                        locations = [];
+                        // click to open a window . Code taken from http://www.w3schools.com/googleapi/
+                        $scope.openInfoWindow = function(e, selectedMarker) {
+                                e.preventDefault();
+                                google.maps.event.trigger(selectedMarker, 'click');
+                            }
+                            // trigger resize  google maps   (This is a fix for a bug)
+                        google.maps.event.addListenerOnce($scope.map, 'idle', function() {
+                            google.maps.event.trigger(map, 'resize');
+                        });
 
-// draw map for parent  ************ *****************
-
-
-
-  // setting the currentuser
-        $('#mapWrappers').is(":visible"); {
-            $scope.currentUser = 1;
-
-            // Add users location to array
-
-            locations.push({
-                'place': 'Your Location',
-                'desc': 'You are Here!',
-                'lat': latt,
-                'long': longtit,
-                'icon': 'images/assets/me.png'
-            });
+                    };
 
 
+                    // end draw map for paret    ************ *****************
 
-            //load map
-            var mapOptions = {
-                zoom: 16,
-                center: new google.maps.LatLng(latt, longtit),
-                mapTypeId: google.maps.MapTypeId.ROADMAP
-            }
-
-            $scope.map = new google.maps.Map(document.getElementById('map'), mapOptions);
-            google.maps.event.trigger($scope.map, 'resize');
-            // set markers array
-            $scope.markers = [];
-
-            var infoWindow = new google.maps.InfoWindow();
-            //create markers              
-            var createMarker = function(info) {
-
-                    var marker = new google.maps.Marker({
-                        map: $scope.map,
-                        position: new google.maps.LatLng(info.lat, info.long),
-                        title: info.place,
-                        icon: info.icon
-
-                    });
-                    marker.content = '<div class="infoWindowContent">' + info.desc + '<br />' + info.lat + ' E,' + info.long + ' N, </div>';
-                    // add popups boxes to map                 
-                    google.maps.event.addListener(marker, 'click', function() {
-                        infoWindow.setContent('<h2>' + marker.title + '</h2>' +
-                            marker.content);
-                        infoWindow.open($scope.map, marker);
-                    });
+                });
 
 
-                    $scope.markers.push(marker);
 
-
+                for (var i = 0; i < locations.length; i++) {
+                    console.log(locations[i]);
                 }
-                // create array of city markers             
-            for (i = 0; i < locations.length; i++) {
-                //checking markers
-                console.log("Is there buttons for? -  "+locations[i].place);
 
-                createMarker(locations[i]);
+
+
+
+                // else if for login .... this is login for child
+            } else if (data[obj].email == $scope.user.email && data[obj].password == $scope.user.password && data[obj].parent == 0) {
+                //create child map
+                console.log("parents database = " + data[obj].parent);
+                $('#mapWrappers2').show();
+                $('#map2').show();
+                $('.form-auth').hide();
+                 $('#detailsPaneRight').show();
+                $scope.runChildMap();
+
+
+                //insert childs location to the database
+
+
+                // upload coodinates to database
+                var request = $http({
+                    method: "POST",
+                    url: "includes/childlocation.php",
+                    data: {
+                        latitude: latt,
+                        longitude: longtit,
+                        email: $scope.user.email,
+                        parents: $scope.user.parents
+
+                    },
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded'
+                    }
+                });
+
+                //response from php               
+                request.success(function(data) {
+                    $scope.geoData = data;
+                    console.log("childs position inserted");
+                    console.log("OK " + data);
+
+
+
+                });
+
+            } else {
+                $('.markers').hide();
+
+                $scope.error_message = 'Sorry please check your login details';
             }
-
-            $scope.openInfoWindow = function(e, selectedMarker) {
-                    e.preventDefault();
-                    google.maps.event.trigger(selectedMarker, 'click');
-                }
-                // trigger resize  google maps   (This is a fix for a bug)
-            google.maps.event.addListenerOnce($scope.map, 'idle', function() {
-                google.maps.event.trigger(map, 'resize');
-            });
-
-        };
-
-
-// end draw map for paret    ************ *****************
-
-                    });
+        }
+    });
 
 
 
-  for(var i = 0;i < locations.length;i++){
-                            console.log(locations[i]);
-                        }
-
-
-
-
-
-
-                    // else if for login .... this is login for child
-                } else if (data[obj].email == $scope.user.email && data[obj].password == $scope.user.password && data[obj].parent == 0) {
-                    //create child map
-                    console.log("parents database = " + data[obj].parent);
-                    $('#mapWrappers2').show();
-                    $('#map2').show();
-                    $('.form-auth').hide();
-                    $scope.runChildMap();
-
-
-                    //insert childs location to the database
-
-
-                    // upload coodinates to database
-                    var request = $http({
-                        method: "POST",
-                        url: "includes/childlocation.php",
-                        data: {
-                            latitude: latt,
-                            longitude: longtit,
-                            email: $scope.user.email,
-                            parents: $scope.user.parents
-
-                        },
-                        headers: {
-                            'Content-Type': 'application/x-www-form-urlencoded'
-                        }
-                    });
-
-                    //response from php               
-                    request.success(function(data) {
-                        $scope.geoData = data;
-                        console.log("childs position inserted");
-                        console.log("OK " + data);
-
-
-
-                    });
-
-                } else {
-                    $('.markers').hide();
-
-                    $scope.error_message = 'Sorry please check your login details';
-                }
-            }
-        });
-
-
-
-
-        // new map for child
+        // second map for child view
 
 
         $scope.runChildMap = function() {
-   locations.push({
-                'place': 'Your Location',
-                'desc': 'You are Here!',
-                'lat': latt,
-                'long': longtit
-            });
+                locations.push({
+                    'place': 'Your Location',
+                    'desc': 'You are Here!',
+                    'lat': latt,
+                    'long': longtit
+                });
                 //load map
                 var mapOptions = {
                     zoom: 14,
@@ -298,7 +413,7 @@ alanApp.controller('alanCtrl', function($scope, $http) {
                             map: $scope.map2,
                             position: new google.maps.LatLng(info.lat, info.long),
                             title: info.place
-                            
+
                         });
                         console.log("NO MARKER !!!!!");
                         marker.content = '<div class="infoWindowContent">' + info.desc + '<br />' + info.lat + ' E,' + info.long + ' N, </div>';
@@ -338,6 +453,7 @@ alanApp.controller('alanCtrl', function($scope, $http) {
         var longtit = $scope.position.coords.longitude;
 
 
+
         //Get the address as a string of current login
 
         var geocoder = new google.maps.Geocoder();
@@ -355,14 +471,14 @@ alanApp.controller('alanCtrl', function($scope, $http) {
 
                     //add a list item to display address as a string  of current login   
 
-                    $('.lists ').append('<li><strong>Address</strong>' + results[0].formatted_address + '</li>');
+                    $('.lists ').prepend('<li><span style="color:#474747;font-weight:bold;"> Your Location</span><br><strong>Address </strong>' + results[0].formatted_address + '</li>');
 
                 } else {
                     console.log("Geocoding failed: " + status);
                 }
 
             });
-        }
+        };
 
 
 
@@ -385,15 +501,14 @@ alanApp.controller('alanCtrl', function($scope, $http) {
         //response from php               
         request.success(function(data) {
             $scope.geoData = data;
+            
+//testing
             console.log("updated");
-
-
             console.log("OK " + data);
 
 
 
         });
-
 
     }
 
@@ -431,6 +546,10 @@ alanApp.config(function($routeProvider) {
         .when('/contact', {
             controller: 'ContactController',
             templateUrl: 'partials/contact.html'
+        })
+        .when('/welcome', {
+            controller: 'ContactController',
+            templateUrl: 'partials/welcome.html'
         })
         .otherwise({
             redirectTo: '/404.html'
@@ -485,7 +604,7 @@ alanApp.controller('customers', function($scope, $http) {
     }) ;
   */
 
-
+// FOUND SOMP CODE HELPFUL - http://www.chaosm.net/blog/2014/05/21/angularjs-contact-form-with-bootstrap-and-phpmailer/
 // contact controller
 alanApp.controller('ContactController', function($scope, $http) {
     $scope.result = 'hidden'
@@ -507,8 +626,11 @@ alanApp.controller('ContactController', function($scope, $http) {
                     'Content-Type': 'application/x-www-form-urlencoded'
                 } //set the headers so angular passing info as form data (not request payload)
             }).success(function(data) {
+
+                //testing
                 console.log("stage3");
                 console.log(data);
+                // clear form
                 $scope.formData.inputName = "";
                 $scope.formData.inputEmail = "";
                 $scope.formData.inputSubject = "";
@@ -530,13 +652,56 @@ alanApp.controller('ContactController', function($scope, $http) {
             $scope.result = 'bg-danger';
         }
     }
-});
-
-alanApp.controller('registerCtrl', function($scope) {
-
-      $scope.register = function() {
-    console.log($scope.user.parent+" "+$scope.user.fname+" "+$scope.user.email+" "+$scope.user.add1);
-    alert("workding");
-}
 
 });
+
+alanApp.controller('registerCtrl', function($scope, $http, $location) {
+
+    $scope.register = function() {
+  
+           var regis = $http({
+        method: "POST",
+        url: "includes/registration.php",
+
+// data from registration form
+        data: {
+            email: $scope.user.email,
+            password: $scope.user.password,
+            parent: $scope.user.pasparent,
+            fname: $scope.user.fname,
+            lname: $scope.user.lname,
+            age: $scope.user.age,
+            add1: $scope.user.add1,
+            add2: $scope.user.add2,
+            mobilenumber: $scope.user.mobilenumber,
+            altemail: $scope.user.altemail
+        },
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded'
+        }
+    });
+
+
+    regis.success(function(data) {
+ //declare data
+        $scope.registered = data;
+ 
+ // testing      
+        console.log("YOU HAVE REGISTERED......"+data);
+ 
+ //redirect after register       
+        $location.path( "/welcome" );
+
+//hide register button
+        $('#regHide').hide();
+    });
+   
+      
+    }
+    
+      
+});
+
+
+
+

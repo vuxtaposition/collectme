@@ -11,7 +11,7 @@
             <div class="col-lg-12">              
         <br> 
         <!-- this is the login controller -->
-        <div class="col-md-4" id="detailsPane">
+        <div class="col-md-3" id="detailsPane">
             <form class="form-auth" ng-submit="login()">
                 <h2>Log In</h2>
                 <p class="text-warning">{{error_message}}</p>
@@ -30,32 +30,35 @@
         <li> <strong class="headingcolor" >Name:</strong> {{x.fname}}</li>
          <li ng-show="{{x.parent}}"><strong  class="headingcolor" >Role:</strong> Parent</li>
           <li> <strong class="headingcolor"  >Child </strong> {{x.alt_email}}</li>
+          <li style="font-weight: bold; color:#474747;"> Last logged locations</li>
         </ul>
-        Last logged locations
-  <div ng-repeat="c in childsCurrentLocation" style="border-bottom: 1px solid white;">
-        <strong  class="headingcolor" >email</strong> {{c.email}}<br>
-        <strong  class="headingcolor" >Lat</strong> {{c.latitude}}<br>
-        <strong  class="headingcolor" >Long</strong> {{c.longitude}}<br>
-        <strong  class="headingcolor" >Date</strong> {{c.dateIn}}
-   </div> 
-        </div>
+
+
+        </div> 
 
    
 <!-- parent map -->
- <div class="col-md-7" id="mapWrappers">
+ <div class="col-md-6" id="mapWrappers">
         <!-- displays the map -->
+     
         <div id="map"></div>    <br>   
 	         <div id="repeat" class="markers" ng-repeat="marker in markers | orderBy : 'title'">
 	            <a id="country_container" href="#" ng-click="openInfoWindow($event, marker)">
-	            <label id="names" >{{marker.title}}</label></a>
+	            <label id="names" >{{marker.title}} 
+                    <!-- display current position -->
+                    <span ng-if="$index == 0">'s Current Position</span>
+                    
+
+                </label></a>
 	        </div>
-     
+        <button id="country_container1" ng-click="login()">Refresh</button>
         </div>
 
 
 
         <!-- child map -->
- <div class="col-md-7" id="mapWrappers2">
+ <div class="col-md-6" id="mapWrappers2">
+     <button ng-click="login()">refresh</button>
         <!-- displays the map -->
         <div id="map2"></div>    <br>   
              <div id="repeat" class="markers" ng-repeat="marker in markers | orderBy : 'title'">
@@ -64,6 +67,22 @@
             </div>
      
         </div>
+
+          <div class="col-md-3" id="detailsPaneRight">
+            <h2>Chat</h2>
+             <input type="text" ng-model="user.msg" placeholder="message" class="form-control"><br> 
+             <button id="country_container1" ng-click="login()">Send <i class="glyphicon glyphicon-send"></i> </button>
+             <br>
+            <div ng-model="user.msgBody" id="msgBody" name="msgBody" >
+          
+           <p ng-repeat="ms in gotMessage track by $index" class="msgParagraph">
+           <!-- display name before message-->
+            <span ng-model="altEmailName" class="altEmailName">{{altEmailName}}</span>
+            <!-- dispaly message -->
+            {{ms.msg}}
+            </p>
+            </div>
+          </div>
 </div>
 </div>
 

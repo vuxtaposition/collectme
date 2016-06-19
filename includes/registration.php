@@ -8,8 +8,8 @@ $email = $request->email;
 $password = $request->password;
 $age = $request->age;
 $parent = $request->parents;
-$mobileNumber = $request->mobileNumber;
-$alt_email = $request->alt_email;
+$mobilenumber = $request->mobilenumber;
+$altemail = $request->altemail;
 $add1 = $request->add1;
 $add2 = $request->add2;
 
@@ -19,7 +19,7 @@ $add2 = $request->add2;
 
 	//MySqli Update Query
 $results = $mysqli->query("INSERT INTO customers (fname, lname, age, parent, password,email,mobileNumber,add1,add2,signup,alt_email)
-VALUES ('$fname','$lname',$age,$parent,'$password,'$mobileNumber','$add1','add2',now(),'$alt_email')");
+VALUES ('$fname','$lname',$age,'$parent','$password','$email','$mobilenumber','$add1','$add2',now(),'$altemail')");
 
 
 

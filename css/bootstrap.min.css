@@ -16,28 +16,40 @@ body {
 }
 #detailsPane{
     background: #5E88A0;
-    border-radius: 5px;
+    border: 1px solid #eee;
     color: white;
     line-height: 1.42857;
     font-weight: 400;
     font-family: helvetica;
     padding: 20px;
     font-size: 18px;
+    border-radius:5px;
+}
+#detailsPaneRight{
+    background: #5E88A0;
+    border: 1px solid #eee;
+    color: white;
+    line-height: 1.42857;
+    font-weight: 400;
+    font-family: helvetica;
+    padding: 20px;
+    font-size: 18px;
+    border-radius:5px;
 }
 #mapWrappers{
     background: lightgray;
     border: 5px solid #5E88A0;
     border-radius: 10px;
-    padding: 20px;
-    margin-left: 20px;
+    padding: 10px;
+    margin-left: 0px;
   
 }
 #mapWrappers2{
     background: lightgray;
     border: 5px solid #5E88A0;
     border-radius: 10px;
-    padding: 20px;
-    margin-left: 20px;
+    padding: 10px;
+    margin-left: 0px;
   
 }
 #picRow h3{
