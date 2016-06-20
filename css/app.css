@@ -13,6 +13,9 @@
     overflow: auto;
     margin-top:5px;
 }
+#mainHeader{
+    height:400px;
+}
 .msgParagraph{
    color:brown;
    padding: 5px;
@@ -28,11 +31,12 @@
     	background: #5E88A0;
     	height: 300px;
     	padding: 10px;
-    	border: 1px solid lightgray;
+    	border: 1px solid gray;
     	margin-left: 10px;
     	margin-right: 10px;
     	margin-bottom:20px;
         color:white;
+        border-radius:5px;
 }
 .lists li{
 margin-bottom:20px;
@@ -110,4 +114,63 @@ font-size:16px;
      }
 #names { 
      cursor: pointer; 
+       }
+       @media only screen and (max-width: 1020px) and (min-width: 768px){
+
+        .customerBlock{
+        float: left;
+        width: 45%;
+        background: #5E88A0;
+        height: 300px;
+        padding: 10px;
+        border: 1px solid gray;
+        margin-left: 10px;
+        margin-right: 10px;
+        margin-bottom:20px;
+        color:white;
+        border-radius:5px;
+        }
+        #mainHeader{
+        height:300px;
+        }
+       }
+       
+       @media only screen and (max-width: 767px) and (min-width: 480px){
+
+        .customerBlock{
+        float: left;
+        width: 45%;
+        background: #5E88A0;
+        height: 300px;
+        padding: 10px;
+        border: 1px solid gray;
+        margin-left: 10px;
+        margin-right: 10px;
+        margin-bottom:20px;
+        color:white;
+        border-radius:5px;
+        }
+        #mainHeader{
+        height:200px;
+        }
+
+       }
+       @media only screen and (max-width: 479px){
+
+                .customerBlock{
+        float: left;
+        width: 95%;
+        background: #5E88A0;
+        height: 300px;
+        padding: 10px;
+        border: 1px solid gray;
+        margin-left: 10px;
+        margin-right: 10px;
+        margin-bottom:20px;
+        color:white;
+        border-radius:5px;
+        }
+        #mainHeader{
+        height:150px;
+        }
        }

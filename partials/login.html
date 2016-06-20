@@ -75,9 +75,9 @@
              <br>
             <div ng-model="user.msgBody" id="msgBody" name="msgBody" >
           
-           <p ng-repeat="ms in gotMessage track by $index" class="msgParagraph">
+           <p ng-repeat="ms in gotMessage track by $index" class="msgParagraph" >
            <!-- display name before message-->
-            <span ng-model="altEmailName" class="altEmailName">{{altEmailName}}</span>
+            <span class="altEmailName">{{ms.email}}: </span>
             <!-- dispaly message -->
             {{ms.msg}}
             </p>

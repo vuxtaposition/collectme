@@ -6,18 +6,21 @@ $email = $request->email;
 $msg = $request->msg;
 $altemail = $request->altemail;
 
+  if($msg ==""){
 
-  //MySqli Update Query
-$results = $mysqli->query("INSERT INTO message (email, msg, alt_email, dateIn)
-VALUES ('$email','$msg','$altemail',now())");
+    }else{
+      //MySqli Update Query
+    $results = $mysqli->query("INSERT INTO message (email, msg, alt_email, dateIn)
+    VALUES ('$email','$msg','$altemail',now())");
 
 
 
-if($results){
-    print 'Success! record updated / deleted'; 
-}else{
-    print 'Error : ('. $mysqli->errno .') '. $mysqli->error;
-}     
-
+      if($results){
+          print 'Success! record updated / deleted'; 
+      }else{
+          print 'Error : ('. $mysqli->errno .') '. $mysqli->error;
+      }
+       
+  }
 ?>
 

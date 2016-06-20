@@ -50,10 +50,11 @@ alanApp.controller('alanCtrl', function($scope, $http, $timeout) {
     //this is the main run function 
     $scope.login = function() {
 $scope.logHide = false;
- $timeout($scope.login, 30000);
+ $timeout($scope.login, 60000);
         //set variables of current login              
         var latt = $scope.position.coords.latitude;
         var longtit = $scope.position.coords.longitude;
+
 
 
         //check if parent
@@ -96,6 +97,12 @@ $scope.logHide = false;
 
 // post message   
 
+// do not submit chat if it is empty
+if($scope.user.msg !=""){
+
+// showing the current users chat in the chat box
+$('#msgBody p').first().prepend("<p style='color:#474747;'><span class='altEmailName'>Me: </span>"+$scope.user.msg+"</p>");
+}
    var chat = $http({
                     method: "POST",
                     url: "includes/chat.php",
@@ -121,7 +128,8 @@ $scope.logHide = false;
                     method: "POST",
                     url: "includes/chatBack.php",
                     data: {                      
-                        altemail: data[obj].alt_email,                        
+                        altemail: data[obj].alt_email,
+                        email: data[obj].email                        
                     },
                     headers: {
                         'Content-Type': 'application/x-www-form-urlencoded'
@@ -131,11 +139,12 @@ $scope.logHide = false;
                 //response from php               
                 chatBack.success(function(data) {
   // setting chat name                  
-$scope.altEmailName = data[obj].email.slice(0,-9);
+
 
                     $scope.gotMessage = data;
                     $scope.user.msg = "";
-                    console.log("This is all the datat "+data[obj].msg);
+                    //testing
+                    console.log("This is all the data "+data[obj].msg);
 
          
                 });
@@ -345,7 +354,57 @@ $scope.altEmailName = data[obj].email.slice(0,-9);
 
 
                 //insert childs location to the database
+// do not submit chat if it is empty
+if($scope.user.msg !=""){
 
+// showing the current users chat in the chat box
+$('#msgBody p').first().prepend("<p style='color:#474747;'><span class='altEmailName'>Me: </span>"+$scope.user.msg+"</p>");
+}
+   var chat = $http({
+                    method: "POST",
+                    url: "includes/chat.php",
+                    data: {
+                        email: data[obj].email,
+                        altemail: data[obj].alt_email,
+                        msg: $scope.user.msg
+
+                    },
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded'
+                    }
+                });
+
+                //response from php               
+                chat.success(function(data) {
+                    console.log("Chat has benn entered.."+data);
+                });
+
+
+// chat back from child
+    var chatBack = $http({
+                    method: "POST",
+                    url: "includes/chatBack.php",
+                    data: {                      
+                        altemail: data[obj].alt_email,
+                        email: data[obj].email                        
+                    },
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded'
+                    }
+                });
+
+                //response from php               
+                chatBack.success(function(data) {
+  // setting chat name                  
+
+
+                    $scope.gotMessage = data;
+                    $scope.user.msg = "";
+                    //testing
+                    console.log("This is all the data "+data[obj].msg);
+
+         
+                });
 
                 // upload coodinates to database
                 var request = $http({
@@ -482,7 +541,6 @@ $scope.altEmailName = data[obj].email.slice(0,-9);
 
 
 
-
         // upload coodinates to database
         var request = $http({
             method: "POST",
@@ -550,9 +608,9 @@ alanApp.config(function($routeProvider) {
         .when('/welcome', {
             controller: 'ContactController',
             templateUrl: 'partials/welcome.html'
-        })
+        })      
         .otherwise({
-            redirectTo: '/404.html'
+            redirectTo: '#/404.html'
         });
 });
 
