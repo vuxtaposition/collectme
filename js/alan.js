@@ -100,8 +100,10 @@ $scope.logHide = false;
 // do not submit chat if it is empty
 if($scope.user.msg !=""){
 
+
+
 // showing the current users chat in the chat box
-$('#msgBody p').first().prepend("<p style='color:#474747;'><span class='altEmailName'>Me: </span>"+$scope.user.msg+"</p>");
+$('#msgBody p:first').prepend("<p style='color:#474747;'><span class='altEmailName'>Me: </span>"+$scope.user.msg+"</p>");
 }
    var chat = $http({
                     method: "POST",
@@ -239,7 +241,7 @@ $('#msgBody p').first().prepend("<p style='color:#474747;'><span class='altEmail
                     }
                     // checking to see if I have results from positions table
                     for (var i = 0; i < locations.length; i++) {
-                        console.log(locations[i]);
+                        console.log("Number "+i+" "+locations[i].lat);
                     }
 
 
@@ -265,11 +267,10 @@ $('#msgBody p').first().prepend("<p style='color:#474747;'><span class='altEmail
                         });
 
 
-
                         //load map
                         var mapOptions = {
                             zoom: 16,
-                            center: new google.maps.LatLng(latt, longtit),
+                            center: new google.maps.LatLng(locations[0].lat, locations[0].long),
                             mapTypeId: google.maps.MapTypeId.ROADMAP
                         }
 
