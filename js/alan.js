@@ -11,7 +11,7 @@ alanApp.controller('alanCtrl', function($scope, $http, $timeout) {
 
     // object for locations
     var locations = [];
-
+   
     //get json data to display on homepage
     $http.get('json/heading.json').success(function(data2) {
         $scope.heading = data2;
@@ -37,7 +37,7 @@ alanApp.controller('alanCtrl', function($scope, $http, $timeout) {
     $('#detailsPaneRight').hide();
     $('#mapWrappers2').hide();
     
-
+ $scope.settime = 10000;
     //login section
     $scope.user = {
         username: '',
@@ -49,8 +49,16 @@ alanApp.controller('alanCtrl', function($scope, $http, $timeout) {
 
     //this is the main run function 
     $scope.login = function() {
-$scope.logHide = false;
- $timeout($scope.login, 60000);
+alert($scope.settime);
+     $scope.logHide = false;
+ 
+     // run the login settimeout funciton if logged in
+
+     if($scope.user.email){
+
+    $timeout($scope.login, $scope.settime);
+
+    }
         //set variables of current login              
         var latt = $scope.position.coords.latitude;
         var longtit = $scope.position.coords.longitude;
@@ -60,6 +68,7 @@ $scope.logHide = false;
         //check if parent
 
     $('#map').hide();
+    $('#hideMePic').hide();
 
     //check user on database using a php page
     var request = $http({
@@ -359,7 +368,7 @@ $('#msgBody p:first').prepend("<p style='color:#474747;'><span class='altEmailNa
 if($scope.user.msg !=""){
 
 // showing the current users chat in the chat box
-$('#msgBody p').first().prepend("<p style='color:#474747;'><span class='altEmailName'>Me: </span>"+$scope.user.msg+"</p>");
+$('#msgBody p:first').prepend("<p style='color:#474747;'><span class='altEmailName'>Me: </span>"+$scope.user.msg+"</p>");
 }
    var chat = $http({
                     method: "POST",
@@ -444,15 +453,100 @@ $('#msgBody p').first().prepend("<p style='color:#474747;'><span class='altEmail
 
 
         // second map for child view
-
+$scope.parents_lat="";
+$scope.parents_long=""; 
+ $scope.locations = [];
+        
 
         $scope.runChildMap = function() {
-                locations.push({
+     
+    
+ 
+
+ var request = $http({
+            method: "POST",
+            url: "includes/userlocation.php",
+            data: {
+                latitude: latt,
+                longitude: longtit,
+                email: $scope.user.email
+
+            },
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded'
+            }
+        });
+
+        //response from php               
+        request.success(function(data) {
+            $scope.geoData = data;
+            
+//testing
+            console.log("updated");
+            console.log("OK " + data);
+
+
+
+        });
+
+
+
+
+   var request3 = $http({
+                    method: "POST",
+                    url: "includes/getParentLocation.php",
+                    data: {
+                        email: 'alanleonard001@gmail.com'
+
+                    },
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded'
+                    }
+                });
+   request3.success(function(data,locations) {
+
+    console.log(" return   "+data,$scope.locations);
+
+    this.locations = $scope.locations;
+     for (var c in data) {
+
+     $scope.parents_lat = data[c].latitude;
+     $scope.parents_long = data[c].longitude;   
+
+     
+    
+     console.log("Returning "+$scope.parents_lat+" "+$scope.parents_long);
+   }
+
+        $scope.locations.push({
+                            'place': 'Your Parents',
+                            'desc': 'Your parents locations!',
+                            'lat': $scope.parents_lat,
+                            'long': $scope.parents_long,
+                            'icon': 'images/assets/me.png'
+                        });
+        
+
+         
+   });
+
+console.log("Can you see this value"+$scope.parents_lat);
+
+
+           locations.push({
                     'place': 'Your Location',
                     'desc': 'You are Here!',
                     'lat': latt,
                     'long': longtit
                 });
+
+
+
+            
+
+                  for (var i = 0; i < locations.length; i++) {
+                        console.log("Number "+i+" "+locations[i].lat);
+                    }
                 //load map
                 var mapOptions = {
                     zoom: 14,
@@ -543,31 +637,7 @@ $('#msgBody p').first().prepend("<p style='color:#474747;'><span class='altEmail
 
 
         // upload coodinates to database
-        var request = $http({
-            method: "POST",
-            url: "includes/userlocation.php",
-            data: {
-                latitude: latt,
-                longitude: longtit,
-                email: $scope.user.email
-
-            },
-            headers: {
-                'Content-Type': 'application/x-www-form-urlencoded'
-            }
-        });
-
-        //response from php               
-        request.success(function(data) {
-            $scope.geoData = data;
-            
-//testing
-            console.log("updated");
-            console.log("OK " + data);
-
-
-
-        });
+       
 
     }
 
