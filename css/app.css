@@ -4,6 +4,16 @@
     	Wdith:100%;
     	height:auto;
 }
+h2{
+    float:left;
+    width:100%;
+    text-align: center;
+
+}
+input{
+    width:100%;
+}
+
 #msgBody{
     width: 100%;
     height: 200px;
@@ -12,9 +22,45 @@
     border-radius: 5px;
     overflow: auto;
     margin-top:5px;
+    border:2px solid white;
+}
+.xbox{
+    float: right;
+    color: red;
+    background: #eee;
+    padding: 7px;
+    font-weight: bold;
+    border-radius: 10px;
+    font-size: 22px;
+    cursor: pointer;
+    height: 50px;
+    border: 1px solid gray;
 }
 #mainHeader{
     height:400px;
+}
+.collectMeBtn{
+    background: #40C4DD;
+    padding: 6px;
+    border-radius: 10px;
+    float: right;
+    margin-top:15px;
+    cursor:pointer;
+    width:100%;
+    text-align: center;
+    margin-bottom:16px;
+   
+}
+.collectMeBtn2{
+    background: #40C4DD;
+    padding: 6px;
+    border-radius: 10px;
+    float: right;
+    margin-top:15px;
+    cursor:pointer;
+    width:100%;
+    text-align: center;
+    margin-bottom:16px;   
 }
 .msgParagraph{
    color:brown;
@@ -67,13 +113,13 @@ font-size:16px;
 
 #map{
     height:500px; 
-    width:500px; 
+    width:100%; 
     margin:0 auto;
 /*    box-shadow: 3px 3px 10px gray;*/  
     }
     #map2{
     height:500px; 
-    width:500px; 
+    width:100%; 
     margin:0 auto;
 /*    box-shadow: 3px 3px 10px gray;*/  
     }
@@ -81,30 +127,39 @@ font-size:16px;
      display: inline;
      }
 #country_container { 
-     margin: 8px 2px 2px 0px; 
-     text-align: center; 
-     width: 90px; 
-     padding: 10px; 
-     color: white; 
-     background-color: #5E88A0; 
-     font-size: 14px; 
-     cursor: pointer;
+    margin: 8px 2px 2px 0px;
+    text-align: center;
+    width: 90px;
+    padding: 10px;
+    color: white;
+    background-color: #5E88A0;
+
+    cursor: pointer;
+    float: left;
+    display: block;
+    float: left;
+    height: auto;
+    width: 30%;
+    height: 70px;
+    margin: 5px;
+    border: 2px solid white;
+    border-radius: 5px;
      }
 #country_container1 { 
     margin: 8px 2px 2px 0px;
     text-align: center;
-    width: 90px;
+    width: 100%;
     padding: 6px;
     margin-top: -10px;
-    font-weight: bold;
+
     color: white;
     float: right;
     background-color: #40C4DD;
-    font-size: 16px;
     cursor: pointer;
     border: none;
     border-radius: 10px;
     border: 1px solid #5E88A0;
+    margin-top:20px;
     }
 #country_container:hover { 
      box-shadow: 0px 0px 10px blue;
@@ -133,6 +188,12 @@ font-size:16px;
         #mainHeader{
         height:300px;
         }
+        #mapWrappers{
+    height:950px;
+        }
+        #mapWrappers2{
+    height:950px;
+        }
        }
        
        @media only screen and (max-width: 767px) and (min-width: 480px){
@@ -152,8 +213,13 @@ font-size:16px;
         }
         #mainHeader{
         height:200px;
-        }
-
+            }
+    #mapWrappers{
+    height:950px;
+    }
+    #mapWrappers2{
+    height:950px;
+    }
        }
        @media only screen and (max-width: 479px){
 
@@ -172,5 +238,11 @@ font-size:16px;
         }
         #mainHeader{
         height:150px;
+        }
+        #mapWrappers{
+        height:1000px;
+        }
+        #mapWrappers2{
+        height:700px;
         }
        }

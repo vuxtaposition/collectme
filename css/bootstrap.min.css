@@ -14,6 +14,9 @@ body {
     margin: 0;
     background:#eee;
 }
+#canclePickup{
+    display:none;
+}
 #detailsPane{
     background: #5E88A0;
     border: 1px solid #eee;
@@ -35,6 +38,7 @@ body {
     padding: 20px;
     font-size: 18px;
     border-radius:5px;
+    height:680px;
 }
 #mapWrappers{
     background: lightgray;

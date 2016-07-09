@@ -11,40 +11,18 @@
             <div class="col-lg-12">              
         <br> 
         <!-- this is the login controller -->
-        <div class="col-md-3" id="detailsPane">
-            <form class="form-auth" ng-submit="login()">
-                <h2>Log In</h2>
-                <p class="text-warning">{{error_message}}</p>
-                <input type="email" ng-model="user.email" placeholder="email" class="form-control"><br>
-                <input type="password" ng-model="user.password" placeholder="Password" class="form-control"><br>
-                   Parent <input type="radio" ng-model="user.parents" value="1" class="form-control">
-                     Child     <input type="radio" ng-model="user.parents" value="0" class="form-control"><br>
-                <input type="submit" value="Log in" class="btn btn-primary" />
-                <hr>
-            </form>
-        
-        Lat is: {{position.coords.latitude}}<br>Long is: {{position.coords.longitude}}
-        <hr>
-       <!-- list out the name and location -->
-       <ul class="lists" ng-repeat=" x in loginData ">
-        <li> <strong class="headingcolor" >Name:</strong> {{x.fname}}</li>
-         <li ng-show="{{x.parent}}"><strong  class="headingcolor" >Role:</strong> Parent</li>
-          <li> <strong class="headingcolor"  >Child </strong> {{x.alt_email}}</li>
-          <li style="font-weight: bold; color:#474747;"> Last logged locations</li>
-        </ul>
-
-
-        </div> 
+       
  <div class="col-md-6" id="hideMePic">
-<img src="images/family.jpg" />
+<img src="images/family.jpg" width="100%"/>
  </div>
    
 <!-- parent map -->
  <div class="col-md-6" id="mapWrappers">
         <!-- displays the map -->
-     
-        <div id="map"></div>    <br>   
-	         <div id="repeat" class="markers" ng-repeat="marker in markers | orderBy : 'title'">
+     <span class="popup"><span class="xbox" ng-click="hidePopup()">x</span><img src="images/assets/popup.png" alt="pupup" style="width:50%;float:right;"/></span>
+        <div id="map"></div>    <br>  
+
+	         <div id="repeat" class="markers" ng-repeat="marker in markers | limitTo: 7">
 	            <a id="country_container" href="#" ng-click="openInfoWindow($event, marker)">
 	            <label id="names" >{{marker.title}} 
                     <!-- display current position -->
@@ -70,24 +48,64 @@
      
         </div>
 
-          <div class="col-md-3" id="detailsPaneRight">
-            Updare Intervals: <select ng-model="settime" style="color:#474747;padding:5px;width:100%;">
-  <option value="100000">None</option>
-  <option value="20000">30 Seconds</option>
-  <option value="60000">1 Minute</option>
-  <option value="180000">3 Minutes</option>
-  <option value="300000">5 Minutes</option>
-</select><br> timer:
 
-            <input type="text" ng-model="settime" style="color:black;" id="parLat"/><br>
-            <input type="text" ng-model="parents_long" style="color:black;" id="parLong"/>
-            <h2>Chat</h2>
-             <input type="text" ng-model="user.msg" placeholder="message" class="form-control"><br> 
-             <button id="country_container1" ng-click="login()">Send <i class="glyphicon glyphicon-send"></i> </button>
+
+
+
+
+
+
+
+
+
+
+
+          <div class="col-md-3" id="detailsPaneRight">
+            
+<!-- allow set interval -->
+            Update Intervals: 
+
+
+            <select ng-model="settime" style="color:#474747;padding:5px;width:100%;">
+              <option value="120000">Normal</option>
+              <option value="30000">30 Seconds</option>
+              <option value="60000">1 Minute</option>
+              <option value="180000">3 Minutes</option>
+              <option value="300000">5 Minutes</option>
+            </select><br> 
+
+  <!-- allow set Places -->
+            Nearby Places: 
+
+
+            <select ng-model="nearbyPlaces" style="color:#474747;padding:5px;width:100%;">
+              <option value="aquarium">Choose Place</option>
+              <option value="atm">atm</option>
+              <option value="parking">parking</option>
+              <option value="police">police</option>
+              <option value="restaurant">restaurant</option>
+              <option value="school">school</option>
+              <option value="movie_theater">movie_theater</option>
+              <option value="hospital">hospital</option>
+            </select><br> 
+
+          
+           <button id="country_container1" ng-click="login()">NEARBY <i class="glyphicon glyphicon-search"></i> </button>
+            
+<!-- show chat -->
+            <h2>Chat</h2><span class="collectMeBtn"  id="collectMeBtn" ng-model="collectMeBtn" ng-click="collectMeFunction()">COLLECT ME!</span><br>
+
+            <span class="collectMeBtn2" id="canclePickup" ng-click="canclePickup()"> CANCLE COLLECT</span><br>
+
+             <input type="text" ng-model="user.msg" placeholder="message" class="form-control">
+
+             <button id="country_container1" ng-click="login()">SEND <i class="glyphicon glyphicon-send"></i> </button>
+
              <br>
+
             <div ng-model="user.msgBody" id="msgBody" name="msgBody" >
           
-           <p ng-repeat="ms in gotMessage track by $index" class="msgParagraph" >
+           <p ng-repeat="ms in gotMessage track by $index " class="msgParagraph" >
            <!-- display name before message-->
             <span class="altEmailName">{{ms.email}}: </span>
             <!-- dispaly message -->
@@ -95,9 +113,72 @@
             </p>
             </div>
           </div>
+
+
+
+           <div class="col-md-3" id="detailsPane">
+            <form class="form-auth" ng-submit="login()">
+                <h2>Log In</h2>
+                <p class="text-warning">{{error_message}}</p>
+                <input type="email" ng-model="user.email" placeholder="email" class="form-control"><br>
+                <input type="password" ng-model="user.password" placeholder="Password" class="form-control"><br>
+                   Parent <input type="radio" style="size:40px;" ng-model="user.parents" value="1" class="form-control">
+                     Child     <input type="radio"  style="size:40px;" ng-model="user.parents" value="0" class="form-control"><br>
+                <input type="submit" value="Log in" id="subButton" class="btn btn-primary" />
+                <hr>
+            </form>
+        
+        Lat is: {{position.coords.latitude}}<br>Long is: {{position.coords.longitude}}
+        <hr>
+       <!-- list out the name and location -->
+       <ul class="lists" ng-repeat=" x in loginData track by $index ">
+         
+          <li> <strong class="headingcolor" >Name:</strong> {{x.fname}}</li>
+         
+          <li ng-show="{{x.parent}}"><strong  class="headingcolor" >Role:</strong> Parent</li>
+         
+          <li> <strong class="headingcolor"  >Child </strong> {{x.alt_email}}</li>
+          
+          <li style="font-weight: bold; color:#474747;"> Last logged locations</li>
+        </ul>
+
+
+        </div> 
 </div>
 </div>
 
+<div id="floating-panel">
+    <b>Start: </b>
+    <select id="start">
+      <option value="chicago, il">Chicago</option>
+      <option value="st louis, mo">St Louis</option>
+      <option value="joplin, mo">Joplin, MO</option>
+      <option value="oklahoma city, ok">Oklahoma City</option>
+      <option value="amarillo, tx">Amarillo</option>
+      <option value="gallup, nm">Gallup, NM</option>
+      <option value="flagstaff, az">Flagstaff, AZ</option>
+      <option value="winona, az">Winona</option>
+      <option value="kingman, az">Kingman</option>
+      <option value="barstow, ca">Barstow</option>
+      <option value="san bernardino, ca">San Bernardino</option>
+      <option value="los angeles, ca">Los Angeles</option>
+    </select>
+    <b>End: </b>
+    <select id="end">
+      <option value="chicago, il">Chicago</option>
+      <option value="st louis, mo">St Louis</option>
+      <option value="joplin, mo">Joplin, MO</option>
+      <option value="oklahoma city, ok">Oklahoma City</option>
+      <option value="amarillo, tx">Amarillo</option>
+      <option value="gallup, nm">Gallup, NM</option>
+      <option value="flagstaff, az">Flagstaff, AZ</option>
+      <option value="winona, az">Winona</option>
+      <option value="kingman, az">Kingman</option>
+      <option value="barstow, ca">Barstow</option>
+      <option value="san bernardino, ca">San Bernardino</option>
+      <option value="los angeles, ca">Los Angeles</option>
+    </select>
+    </div>
 
 
 

@@ -6,14 +6,20 @@ $lat = $request->latitude;
 $long = $request->longitude;
 $email = $request->email;
 $parent = $request->parents;
+$collectme = $request->collectme;
 
+if($collectme == 1){
+	$collectme = $collectme;
+}else{
+	$collectme = 0;
+}
 
         // query to display all the customers
        // $query = mysqli_query($link,"UPDATE customers SET latitude = $lat WHERE email = $email ");
 
 	//MySqli Update Query
-$results = $mysqli->query("INSERT INTO position (email, latitude, longitude, dateIn, parent,icon)
-VALUES ('$email',$lat,$long,now(),$parent,'images/assets/minor.png')");
+$results = $mysqli->query("INSERT INTO position (email, latitude, longitude, dateIn, parent,icon,collectme)
+VALUES ('$email',$lat,$long,now(),$parent,'images/assets/minor.png','$collectme')");
 
 //MySqli Delete Query
 //$results = $mysqli->query("DELETE FROM products WHERE ID=24");
