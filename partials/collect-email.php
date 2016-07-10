@@ -8,7 +8,7 @@ echo $email;
 $headers   = array();
 $headers[] = "MIME-Version: 1.0";
 $headers[] = "Content-type: text/plain; charset=iso-8859-1";
-$headers[] = "From: Sender Name <sender@domain.com>";
+$headers[] = "From: Sender Name <alanleonard001@hotmail.com";
 $headers[] = "Bcc: JJ Chong <bcc@domain2.com>";
 $headers[] = "Reply-To: Recipient Name <receiver@domain3.com>";
 $headers[] = "Subject: {$subject}";

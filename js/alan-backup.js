@@ -1,3 +1,4 @@
+
 // some code snippets taken and modified from http://www.w3schools.com/googleapi/
 var alanApp = angular.module('alanApp', ['ngRoute']);
 
@@ -11,17 +12,19 @@ alanApp.controller('alanCtrl', function($scope, $http, $timeout,$location) {
 
     // object for locations
     var locations = [];
-    
+    var place;
+
 // show hide butons and links
 $('.hideLins').show();
 $('.collectMeBtn').hide();
+$('.collectMeBtn2').hide();
 
 $scope.hidePopup = function(){
     $('.popup').hide();
   
  
 }
-
+$('#canclePickup').hide();
     //get json data to display on homepage
     $http.get('json/heading.json').success(function(data2) {
         $scope.heading = data2;
@@ -43,6 +46,7 @@ $scope.hidePopup = function(){
 
     // set variable for timeout  changable by user
     $scope.settime = 120000;
+    $scope.nearbyPlaces = "aquarium";
     //login section
     $scope.user = {
         username: '',
@@ -53,14 +57,26 @@ $scope.hidePopup = function(){
    $scope.collectMeFunction = function(){
     $scope.login(1);
     //$location.path("/sentcollectme");
-    
+     $('#canclePickup').show();
+     $('#collectMeBtn').hide();
+     
+    alert("You have asked to be collected");
+
    }
 var counts = 0;
     //this is the main run function 
+    place;
     $scope.login = function(x) {
    
     counts ++
-    alert(counts);
+   // alert(counts);
+    
+    if(counts== 1){
+        $('#subButton').val(" Submit Coorinates");
+    }
+        if(counts== 2){
+        $('#subButton').val(" Next");
+    }
 
     $(".lists li").each(function() {
   if($('.lists li').length > 0){
@@ -84,7 +100,7 @@ var counts = 0;
 
 // redirect if collect me button is clicked!
      if(fromClick == 1){
-         alert("formclick = "+fromClick);
+        // alert("formclick = "+fromClick);
      }
 
       
@@ -355,15 +371,69 @@ $http({
 
                                  
 //w3schools
-
+                            $scope.alanMap =new google.maps.LatLng(locations[0].lat, locations[0].long);
                             //load map
                             var mapOptions = {
-                                zoom: 16,
-                                center: new google.maps.LatLng(locations[0].lat, locations[0].long),
+                                zoom: 12,
+                                center: $scope.alanMap,
                                 mapTypeId: google.maps.MapTypeId.ROADMAP
                             }
 
                             $scope.map = new google.maps.Map(document.getElementById('map'), mapOptions);
+                     
+
+    $scope.request = {
+    location: $scope.alanMap,
+    radius: '3000',
+    types:  [$scope.nearbyPlaces]
+  };
+
+  service = new google.maps.places.PlacesService($scope.map);
+  service.nearbySearch($scope.request, callback);
+
+
+function callback(resulted, status) {
+  if (status == google.maps.places.PlacesServiceStatus.OK) {
+    for (var i = 0; i < resulted.length; i++) {
+          var place = resulted[i];
+          console.log("Local place "+place.name);
+                    
+         console.log("local place "+place.geometry.location.lat());
+
+    locations.push({
+                    'place': place.name,
+                    'desc': 'Location',
+                    'lat': place.geometry.location.lat(),
+                    'long': place.geometry.location.lng(),
+                    'icon': 'images/nob.png'
+                });
+
+    console.log("new locations "+locations[i].place);
+
+    createMarker(locations[i]);
+
+        }
+      }
+    }
+
+
+
+
+
+   
+
+
+
+
+
+  
+    
+
+
+
+
+
+
                             // helps the window to reload and display correctly
                             google.maps.event.trigger($scope.map, 'resize');
                             // set markers array
@@ -389,6 +459,8 @@ var third=new google.maps.LatLng(locations[2].lat, locations[2].long);
                             var infoWindow = new google.maps.InfoWindow();
                             //create markers  
 
+                            
+
                             var createMarker = function(info) {
 
                                 var marker = new google.maps.Marker({
@@ -398,6 +470,7 @@ var third=new google.maps.LatLng(locations[2].lat, locations[2].long);
                                     icon: info.icon
 
                                 });
+
                                 marker.content = '<div class="infoWindowContent">' + info.desc + '<br />' + info.lat + ' E,' + info.long + ' N, </div>';
                                 // add popups boxes to map                 
                                 google.maps.event.addListener(marker, 'click', function() {
@@ -409,7 +482,7 @@ var third=new google.maps.LatLng(locations[2].lat, locations[2].long);
 
                                 $scope.markers.push(marker);
 
-
+ 
                             }
 
                             // only allow 4 objects in the array at any time
@@ -423,6 +496,11 @@ var third=new google.maps.LatLng(locations[2].lat, locations[2].long);
                             }
 
                             locations = [];
+                            
+
+
+
+
                             // click to open a window . Code taken from http://www.w3schools.com/googleapi/
                             $scope.openInfoWindow = function(e, selectedMarker) {
                                     e.preventDefault();
@@ -655,6 +733,42 @@ $('.collectMeBtn').show();
                 }
 
                 $scope.map2 = new google.maps.Map(document.getElementById('map2'), mapOptions);
+                $scope.alanMap =new google.maps.LatLng(locations[0].lat, locations[0].long);
+                $scope.request = {
+                    location: $scope.alanMap,
+                    radius: '3000',
+                    types:  [$scope.nearbyPlaces]
+                  };
+
+                  service = new google.maps.places.PlacesService($scope.map2);
+                  service.nearbySearch($scope.request, callback);
+
+
+                function callback(resulter, status) {
+                  if (status == google.maps.places.PlacesServiceStatus.OK) {
+                    for (var i = 0; i < resulter.length; i++) {
+                      var place = resulter[i];
+                      console.log("Local place "+place.name);
+                     
+                     console.log("local place "+place.geometry.location.lat());
+
+                locations.push({
+                                'place': place.name,
+                                'desc': 'Location',
+                                'lat': place.geometry.location.lat(),
+                                'long': place.geometry.location.lng(),
+                                'icon': 'images/nob.png'
+                            });
+
+                console.log("new locations "+locations[i].place);
+
+                createMarker(locations[i]);
+
+                    }
+                  }
+                }
+
+
                 google.maps.event.trigger($scope.map2, 'resize');
                 // set markers array
                 $scope.markers = [];
@@ -791,6 +905,10 @@ alanApp.config(function($routeProvider) {
          .when('/sentcollectme', {
             controller: 'ContactController',
             templateUrl: 'partials/sentcollectme.html'
+        })
+          .when('/directionsmap', {
+            controller: 'alanCtrl',
+            templateUrl: 'partials/directionsmap.html'
         })
         .otherwise({
             redirectTo: '#/404.html'

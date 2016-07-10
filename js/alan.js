@@ -391,10 +391,6 @@ $http({
   service.nearbySearch($scope.request, callback);
 
 
-
-
-
-
 function callback(resulted, status) {
   if (status == google.maps.places.PlacesServiceStatus.OK) {
     for (var i = 0; i < resulted.length; i++) {
@@ -419,12 +415,22 @@ function callback(resulted, status) {
       }
     }
 
-   
-var directionsService = new google.maps.DirectionsService;
-        var directionsDisplay = new google.maps.DirectionsRenderer;
 
-alert("working");
-  directionsDisplay.setMap($scope.map);
+
+
+
+   
+
+
+
+
+
+  
+    
+
+
+
+
 
 
                             // helps the window to reload and display correctly
@@ -437,23 +443,7 @@ alert("working");
                                 
 var first=new google.maps.LatLng(locations[0].lat, locations[0].long);
 var second=new google.maps.LatLng(locations[1].lat, locations[1].long);
-var third=new google.maps.LatLng(locations[2].lat, locations[2].long);  
-
-function calculateAndDisplayRoute(directionsService, directionsDisplay) {
-        directionsService.route({
-          origin: second,
-          destination: third,
-          travelMode: google.maps.TravelMode.DRIVING
-        }, function(response, status) {
-            
-          if (status === google.maps.DirectionsStatus.OK) {
-            directionsDisplay.setDirections(response);
-          } else {
-            window.alert('Directions request failed due to ' + status);
-          }
-        });
-    }
-
+var third=new google.maps.LatLng(locations[2].lat, locations[2].long);         
 
                                     var myTrip=[first,second,third];
                                     var flightPath=new google.maps.Polyline({
@@ -462,14 +452,6 @@ function calculateAndDisplayRoute(directionsService, directionsDisplay) {
                                       strokeOpacity:0.8,
                                       strokeWeight:2
                                       });
-
-
-
-
-
-
-
-
 
                                     flightPath.setMap( $scope.map);
 
@@ -778,6 +760,7 @@ $('.collectMeBtn').show();
                             });
 
                 console.log("new locations "+locations[i].place);
+                 
 
                 createMarker(locations[i]);
 
@@ -785,7 +768,57 @@ $('.collectMeBtn').show();
                   }
                 }
 
+                
+ $scope.directions = function() {
+                //DIRECTIONS MAP
+                alert("working");
+                 $('#end').show();
+                 $('#mapWrappers2').fadeOut();
+                $('#mapWrappers3').fadeIn();
 
+        var directionsService = new google.maps.DirectionsService;
+        var directionsDisplay = new google.maps.DirectionsRenderer;
+       
+       $scope.map3  = new google.maps.Map(document.getElementById('map3'), {
+          zoom: 12,
+          center: new google.maps.LatLng(latt, longtit)
+        });
+        directionsDisplay.setMap( $scope.map3 );
+
+        var onChangeHandler = function() {
+          calculateAndDisplayRoute(directionsService, directionsDisplay);
+        };
+        document.getElementById('start').addEventListener('change', onChangeHandler);
+        document.getElementById('end').addEventListener('change', onChangeHandler);
+      }
+
+      function calculateAndDisplayRoute(directionsService, directionsDisplay) {
+        
+        //alert("Before "+$scope.selectedPlace);
+        
+        // string replace to take off the lat and lang keys
+        var moka = $scope.selectedPlace;
+        var res = moka.replace('{"lat":'," ");
+        var bes = res.replace("}"," ");
+        var newDestination = bes.replace('"lng":'," ");
+       
+       // alert("After "+newDestination);
+
+        
+// main directions function form google directions
+        directionsService.route({
+          origin: $scope.alanMap,
+          destination: newDestination,
+          travelMode: google.maps.TravelMode.DRIVING
+        }, function(response, status) {
+          if (status === google.maps.DirectionsStatus.OK) {
+            directionsDisplay.setDirections(response);
+          } else {
+            window.alert('Directions request failed due to ' + status);
+          }
+        });
+
+   }
                 google.maps.event.trigger($scope.map2, 'resize');
                 // set markers array
                 $scope.markers = [];
@@ -922,6 +955,10 @@ alanApp.config(function($routeProvider) {
          .when('/sentcollectme', {
             controller: 'ContactController',
             templateUrl: 'partials/sentcollectme.html'
+        })
+          .when('/directionsmap', {
+            controller: 'alanCtrl',
+            templateUrl: 'partials/directionsmap.html'
         })
         .otherwise({
             redirectTo: '#/404.html'

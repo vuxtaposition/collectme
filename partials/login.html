@@ -45,8 +45,18 @@
                 <a id="country_container" href="#" ng-click="openInfoWindow($event, marker)">
                 <label id="names" >{{marker.title}}</label></a>
             </div>
-     
+    Directions: <button class="DirectionsButton" ng-click="directions()">Get Directions</button>
         </div>
+
+
+   <div class="col-md-6" id="mapWrappers3">
+     <br>
+     <div id="map3"></div>    <br>  
+      
+   </div>
+<div>
+       
+</div>
 
 
 
@@ -93,7 +103,14 @@
            <button id="country_container1" ng-click="login()">NEARBY <i class="glyphicon glyphicon-search"></i> </button>
             
 <!-- show chat -->
-            <h2>Chat</h2><span class="collectMeBtn"  id="collectMeBtn" ng-model="collectMeBtn" ng-click="collectMeFunction()">COLLECT ME!</span><br>
+            <h2>Chat</h2>
+<!-- seclect for directions -->
+          <select style="display: inline-block; width: 100%; color: brown; padding: 5px;" ng-model="selectedPlace" id="end">
+            <option value="" disabled selected>Get Directions</option>
+            <option ng-repeat="x in markers" value="{{x.position}}">{{x.title}}</option>
+          </select>
+<!-- buttons for collect me function -->
+            <span class="collectMeBtn"  id="collectMeBtn" ng-model="collectMeBtn" ng-click="collectMeFunction()">COLLECT ME!</span><br>
 
             <span class="collectMeBtn2" id="canclePickup" ng-click="canclePickup()"> CANCLE COLLECT</span><br>
 
@@ -147,9 +164,8 @@
 </div>
 </div>
 
-<div id="floating-panel">
-    <b>Start: </b>
-    <select id="start">
+ <br>
+<select id="start">
       <option value="chicago, il">Chicago</option>
       <option value="st louis, mo">St Louis</option>
       <option value="joplin, mo">Joplin, MO</option>
@@ -164,7 +180,7 @@
       <option value="los angeles, ca">Los Angeles</option>
     </select>
     <b>End: </b>
-    <select id="end">
+    <select >
       <option value="chicago, il">Chicago</option>
       <option value="st louis, mo">St Louis</option>
       <option value="joplin, mo">Joplin, MO</option>
