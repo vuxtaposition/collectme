@@ -18,7 +18,9 @@ include_once "../includes/myconnect2.php";
                 <div class="imgdiv">
                     <img src="images/assets/profile.png" width="100" alt="profile"/>
                 </div>
+               
                 <div class="address">
+                     {{x.email}}<br> {{x.password}}<br> {{x.Age}}
                     <h4>Address:</h4>
                 {{x.add2}}<br> {{x.add2}}
                 </div>
