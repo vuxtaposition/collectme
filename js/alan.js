@@ -1,6 +1,6 @@
 
 // author alan leonard NCI 2016
-
+// date 30/7/2016
 /*
 some code snippets taken and modified from 
 
@@ -890,7 +890,7 @@ $('.collectMeBtn').show();
         directionsService.route({
           origin: new google.maps.LatLng(latt, longtit),
           destination: newDestination,
-          travelMode: google.maps.TravelMode.DRIVING
+          travelMode: google.maps.TravelMode.WALKING
         }, function(response, status) {
           if (status === google.maps.DirectionsStatus.OK) {
             directionsDisplay.setDirections(response);
