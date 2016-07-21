@@ -1,4 +1,18 @@
-// some code snippets taken and modified from http://www.w3schools.com/googleapi/
+
+// author alan leonard NCI 2016
+
+/*
+some code snippets taken and modified from 
+
+http://www.w3schools.com/angular/
+http://www.w3schools.com/googleapi/
+https://developers.google.com/maps/
+https://developers.google.com/places/
+https://developers.google.com/maps/documentation/javascript/examples/directions-complex
+https://developers.google.com/maps/documentation/javascript/examples/directions-panel
+
+*/
+
 var alanApp = angular.module('alanApp', ['ngRoute']);
 
 var currentUser;
@@ -31,11 +45,6 @@ $('#canclePickup').hide();
 
 
 
-    //location getter
-
-
-
-
     // hide map to start
     $('#mapWrappers').hide();
     $('#detailsPaneRight').hide();
@@ -44,7 +53,8 @@ $('#canclePickup').hide();
 
 
     // set variable for timeout  changable by user
-    $scope.settime = 120000;
+    $scope.settime = 600000;
+
     $scope.nearbyPlaces = "aquarium";
     //login section
     $scope.user = {
@@ -58,15 +68,43 @@ $('#canclePickup').hide();
     //$location.path("/sentcollectme");
      $('#canclePickup').show();
      $('#collectMeBtn').hide();
+      $('#mapWrappers3').hide();
+
+      //send email to collect me!!!!!!
+  
+        $http({
+                method: 'POST',
+                url: 'partials/collect-email.php',
+                data: {
+                        inputEmail: 'alanleonard001@gmail.com'                         
+                        },
+                        headers: {
+                            'Content-Type': 'application/x-www-form-urlencoded'
+                        }
+                
+            }).success(function(data) {
+                console.log("CONTACT EMAIL ------"+data);
+
+            });
      
     alert("You have asked to be collected");
 
    }
 var counts = 0;
+
+
     //this is the main run function 
-    place;
     $scope.login = function(x) {
    
+   // hide directions map
+$('#mapWrappers3').hide();
+
+
+   
+// check if directions button was pressed
+   if(x == 5){
+    $('#mapWrappers3').hide();
+   }
     counts ++
    // alert(counts);
     
@@ -76,13 +114,13 @@ var counts = 0;
         if(counts== 2){
         $('#subButton').val(" Next");
     }
-
+//remove duplicates from the list items
     $(".lists li").each(function() {
   if($('.lists li').length > 0){
     $(this).remove();
     }
 });
-
+// google get location function
     if (navigator.geolocation) {
 
         navigator.geolocation.getCurrentPosition(function(position) {
@@ -305,24 +343,7 @@ var counts = 0;
                             }else{
                                 //$('.popup').hide();
                             }
-//send email to collect me!!!!!!
-  
-$http({
-                method: 'POST',
-                url: 'partials/collect-email.php',
-                data: {
-                            inputEmail: 'alanleonard001@gmail.com'
-                          
 
-                        },
-                        headers: {
-                            'Content-Type': 'application/x-www-form-urlencoded'
-                        }
-                
-            }).success(function(data) {
-                console.log("CONTACT EMAIL ------"+data);
-
-                });
 
 
 
@@ -373,7 +394,7 @@ $http({
                             $scope.alanMap =new google.maps.LatLng(locations[0].lat, locations[0].long);
                             //load map
                             var mapOptions = {
-                                zoom: 12,
+                                zoom: 14,
                                 center: $scope.alanMap,
                                 mapTypeId: google.maps.MapTypeId.ROADMAP
                             }
@@ -417,7 +438,66 @@ function callback(resulted, status) {
 
 
 
+$scope.directions = function() {
+                //DIRECTIONS MAP
+               // alert("working");
+                 $('#end').show();
+                 $('#mapWrappers').fadeOut();
+                $('#mapWrappers3').fadeIn();
 
+
+        var directionsService = new google.maps.DirectionsService;
+        var directionsDisplay = new google.maps.DirectionsRenderer;
+       
+       $scope.map3  = new google.maps.Map(document.getElementById('map3'), {
+          zoom: 12,
+          center: new google.maps.LatLng(latt, longtit)
+        });
+        directionsDisplay.setMap( $scope.map3 );
+
+
+        var onChangeHandler = function() {
+          calculateAndDisplayRoute(directionsService, directionsDisplay);
+        };
+        document.getElementById('start').addEventListener('change', onChangeHandler);
+        document.getElementById('end').addEventListener('change', onChangeHandler);
+      }
+
+      function calculateAndDisplayRoute(directionsService, directionsDisplay) {
+        
+        //alert("Before "+$scope.selectedPlace);
+        
+        // string replace to take off the lat and lang keys
+        var moka = $scope.selectedPlace;
+        var res = moka.replace('{"lat":'," ");
+        var bes = res.replace("}"," ");
+        var newDestination = bes.replace('"lng":'," ");
+       
+       // alert("After "+newDestination);
+
+        
+// main directions function form google directions
+        directionsService.route({
+          origin: new google.maps.LatLng(latt, longtit),
+          destination: newDestination,
+          travelMode: google.maps.TravelMode.DRIVING
+        }, function(response, status) {
+          if (status === google.maps.DirectionsStatus.OK) {
+             
+             document.getElementById('right-panel').innerHTML = " ";
+             directionsDisplay.setDirections(response);
+            
+             directionsDisplay.setPanel(document.getElementById('right-panel'));
+
+        var control = document.getElementById('floating-panel');
+        control.style.display = 'block';
+        map.controls[google.maps.ControlPosition.TOP_CENTER].push(control);
+          } else {
+            window.alert('Directions request failed due to ' + status);
+          }
+        });
+
+   }
 
    
 
@@ -446,14 +526,15 @@ var second=new google.maps.LatLng(locations[1].lat, locations[1].long);
 var third=new google.maps.LatLng(locations[2].lat, locations[2].long);         
 
                                     var myTrip=[first,second,third];
-                                    var flightPath=new google.maps.Polyline({
+                                   /* var flightPath=new google.maps.Polyline({
                                       path:myTrip,
                                       strokeColor:"#0000FF",
                                       strokeOpacity:0.8,
                                       strokeWeight:2
                                       });
+                                    */
 
-                                    flightPath.setMap( $scope.map);
+                                    //flightPath.setMap( $scope.map);
 
                             var infoWindow = new google.maps.InfoWindow();
                             //create markers  
@@ -771,7 +852,7 @@ $('.collectMeBtn').show();
                 
  $scope.directions = function() {
                 //DIRECTIONS MAP
-                alert("working");
+               // alert("working");
                  $('#end').show();
                  $('#mapWrappers2').fadeOut();
                 $('#mapWrappers3').fadeIn();
@@ -807,12 +888,21 @@ $('.collectMeBtn').show();
         
 // main directions function form google directions
         directionsService.route({
-          origin: $scope.alanMap,
+          origin: new google.maps.LatLng(latt, longtit),
           destination: newDestination,
           travelMode: google.maps.TravelMode.DRIVING
         }, function(response, status) {
           if (status === google.maps.DirectionsStatus.OK) {
             directionsDisplay.setDirections(response);
+
+// get the right panel         
+            directionsDisplay.setPanel(document.getElementById('right-panel'));
+
+// this displays the direction panel
+        var control = document.getElementById('floating-panel');
+        control.style.display = 'block';
+        map.controls[google.maps.ControlPosition.TOP_CENTER].push(control);
+        
           } else {
             window.alert('Directions request failed due to ' + status);
           }

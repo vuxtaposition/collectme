@@ -10,45 +10,12 @@ h2{
     text-align: center;
 
 }
-h4 a{
-    color:white;
-}
-h4 a:hover{
-    text-decoration: none;
-    color: lightgray;
-}
 input{
     width:100%;
 }
 #end{
     display:none;
 }
- #floating-panel {
-        background: #fff;
-        padding: 5px;
-        font-size: 14px;
-        font-family: Arial;
-        border: 1px solid #ccc;
-        box-shadow: 0 2px 2px rgba(33, 33, 33, 0.4);
-        display: none;
-      }
-      #right-panel{
-        float:left;
-        background:#eee;
-        height:auto;
-       padding: 5px;
-       font-size: 12px;
-      }
-      @media print {
-        #map {
-          height: 500px;
-          margin: 0;
-        }
-        #right-panel {
-          float: none;
-          width: auto;
-        }
-      }
 body{
     font-family: 'Raleway', sans-serif;
 }

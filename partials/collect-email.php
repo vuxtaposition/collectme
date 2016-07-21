@@ -8,16 +8,16 @@ echo $email;
 $headers   = array();
 $headers[] = "MIME-Version: 1.0";
 $headers[] = "Content-type: text/plain; charset=iso-8859-1";
-$headers[] = "From: Sender Name <alanleonard001@hotmail.com";
-$headers[] = "Bcc: JJ Chong <bcc@domain2.com>";
-$headers[] = "Reply-To: Recipient Name <receiver@domain3.com>";
-$headers[] = "Subject: {$subject}";
+$headers[] = "From: Sender Name <alan@collectme.tigrimigri.com>";
+$headers[] = "Bcc: JJ Chong <alanleonard.collectme.tigrimigri.com";
+$headers[] = "Reply-To: Recipient Name <alan@collectme.tigrimigri.com";
+$headers[] = "Subject: collect me";
 $headers[] = "X-Mailer: PHP/".phpversion();
 
-$emails = mail($email, 'asldflks', 'sdfasdfasdfsdfsdf', implode("\r\n", $headers));
+$emails = mail($email, 'Can you collect me please', 'Collect me app by Alan Leonard', implode("\r\n", $headers));
 
 if($emails){
-    echo "mail send";
+    //echo "mail send";
 }
  
 /* 
@@ -49,4 +49,4 @@ if($emails){
 }
 } */
 
-echo "working";
+//echo "working";

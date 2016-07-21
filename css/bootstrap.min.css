@@ -27,6 +27,7 @@ body {
     padding: 20px;
     font-size: 18px;
     border-radius:5px;
+    height:auto;
 }
 #detailsPaneRight{
     background: #5E88A0;
@@ -36,9 +37,9 @@ body {
     font-weight: 400;
     font-family: helvetica;
     padding: 20px;
-    font-size: 18px;
+    font-size: 14px;
     border-radius:5px;
-    height:680px;
+    height:800px;
 }
 #mapWrappers{
     background: lightgray;
@@ -4717,7 +4718,7 @@ fieldset[disabled] .navbar-default .btn-link:hover {
 }
 .navbar-inverse .navbar-toggle:focus,
 .navbar-inverse .navbar-toggle:hover {
-    background-color: #333
+    background-color: white
 }
 .navbar-inverse .navbar-toggle .icon-bar {
     background-color: #fff
