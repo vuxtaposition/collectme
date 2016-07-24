@@ -10,6 +10,7 @@ https://developers.google.com/maps/
 https://developers.google.com/places/
 https://developers.google.com/maps/documentation/javascript/examples/directions-complex
 https://developers.google.com/maps/documentation/javascript/examples/directions-panel
+https://developers.google.com/maps/documentation/static-maps/
 
 */
 
@@ -26,6 +27,8 @@ alanApp.controller('alanCtrl', function($scope, $http, $timeout,$location) {
     // object for locations
     var locations = [];
     var place;
+
+
 
 // show hide butons and links
 $('.hideLins').show();
@@ -378,9 +381,14 @@ $('#mapWrappers3').hide();
                         $('#mapWrappers').is(":visible"); {
                             $scope.currentUser = 1;
 
-                            // Add users location to array
+// create street view from current locaion                           
+                         
+                         var b = $scope.position.coords.latitude;
+                         var c = $scope.position.coords.longitude;
+                            $scope.streetwiew = ""+b+","+c+"";
 
 
+ // Add users location to array
                             locations.push({
                                 'place': 'Your Location',
                                 'desc': 'You are Here!',
@@ -488,6 +496,9 @@ $scope.directions = function() {
              directionsDisplay.setDirections(response);
             
              directionsDisplay.setPanel(document.getElementById('right-panel'));
+            // alert(newDestination);
+         $('.showStreetView').html('<img style="width:200px;"src="https://maps.googleapis.com/maps/api/streetview?size=600x300&amp;location='+newDestination+'&heading=151.78&amp;pitch=-0.76&amp;key=AIzaSyAM2PLJqr7BNT-J0YgEEvguc50iIDEAZdY"><img>');
+       
 
         var control = document.getElementById('floating-panel');
         control.style.display = 'block';
@@ -539,7 +550,7 @@ var third=new google.maps.LatLng(locations[2].lat, locations[2].long);
                             var infoWindow = new google.maps.InfoWindow();
                             //create markers  
 
-                            
+                          
 
                             var createMarker = function(info) {
 
@@ -897,6 +908,10 @@ $('.collectMeBtn').show();
 
 // get the right panel         
             directionsDisplay.setPanel(document.getElementById('right-panel'));
+// show street view
+  $('.showStreetView').html('<img style="width:200px;"src="https://maps.googleapis.com/maps/api/streetview?size=600x300&amp;location='+newDestination+'&heading=151.78&amp;pitch=-0.76&amp;key=AIzaSyAM2PLJqr7BNT-J0YgEEvguc50iIDEAZdY"><img>');
+       
+
 
 // this displays the direction panel
         var control = document.getElementById('floating-panel');
@@ -968,7 +983,11 @@ $('.collectMeBtn').show();
         var latt = $scope.position.coords.latitude;
         var longtit = $scope.position.coords.longitude;
 
-
+// create street view from current locaion                           
+                         
+        var w = $scope.position.coords.latitude;
+        var s = $scope.position.coords.longitude;
+                            $scope.streetwiew = ""+w+","+s+"";
 
         //Get the address as a string of current login
 
