@@ -66,20 +66,22 @@ $('#canclePickup').hide();
         parents: ''
     };
 
-   $scope.collectMeFunction = function(){
+   $scope.collectMeFunction = function(x){
     $scope.login(1);
     //$location.path("/sentcollectme");
      $('#canclePickup').show();
      $('#collectMeBtn').hide();
       $('#mapWrappers3').hide();
-
+//alert(x);
       //send email to collect me!!!!!!
   
         $http({
                 method: 'POST',
                 url: 'partials/collect-email.php',
                 data: {
-                        inputEmail: 'alanleonard001@gmail.com'                         
+                        inputEmail: 'alanleonard001@gmail.com',
+                        sendInfo:x
+                                             
                         },
                         headers: {
                             'Content-Type': 'application/x-www-form-urlencoded'
@@ -436,6 +438,7 @@ function callback(resulted, status) {
                     'icon': 'images/nob.png'
                 });
 
+
     console.log("new locations "+locations[i].place);
 
     createMarker(locations[i]);
@@ -481,9 +484,9 @@ $scope.directions = function() {
         var bes = res.replace("}"," ");
         var newDestination = bes.replace('"lng":'," ");
        
-       // alert("After "+newDestination);
+ 
 
-        
+        $('.showStreetView').prepend(newDestination.formatted_address);
 // main directions function form google directions
         directionsService.route({
           origin: new google.maps.LatLng(latt, longtit),

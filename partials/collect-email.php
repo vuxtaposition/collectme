@@ -3,6 +3,8 @@ include_once "../includes/myconnect3.php";
 $postdata = file_get_contents("php://input");
 $request = json_decode($postdata);
 $email = $request->inputEmail;
+$locations = $request->locations;
+
 echo $email;
 
 $headers   = array();
@@ -14,7 +16,7 @@ $headers[] = "Reply-To: Recipient Name <alan@collectme.tigrimigri.com";
 $headers[] = "Subject: collect me";
 $headers[] = "X-Mailer: PHP/".phpversion();
 
-$emails = mail($email, 'Can you collect me please', 'Collect me app by Alan Leonard', implode("\r\n", $headers));
+$emails = mail($email, 'Can you collect me please at '.$locations , 'Collect me app by Alan Leonard', implode("\r\n", $headers));
 
 if($emails){
     //echo "mail send";
