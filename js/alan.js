@@ -1126,7 +1126,7 @@ alanApp.controller('customers', function($scope, $http) {
     }) ;
   */
 
-// FOUND SOMP CODE HELPFUL - http://www.chaosm.net/blog/2014/05/21/angularjs-contact-form-with-bootstrap-and-phpmailer/
+// FOUND SOME CODE HELPFUL - http://www.chaosm.net/blog/2014/05/21/angularjs-contact-form-with-bootstrap-and-phpmailer/
 // contact controller
 alanApp.controller('ContactController', function($scope, $http) {
     $scope.result = 'hidden'
@@ -1135,9 +1135,10 @@ alanApp.controller('ContactController', function($scope, $http) {
     $scope.submitButtonDisabled = false;
     $scope.submitted = false; //used so that form errors are shown only after the form has been submitted
     $scope.submit = function(contactform) {
+       // alert($.param($scope.formData));
         $scope.submitted = true;
         $scope.submitButtonDisabled = true;
-        console.log("stage1");
+        console.log("stage1"+$scope.formData);
         if (contactform.$valid) {
             console.log("stage2");
             $http({

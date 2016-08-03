@@ -22,7 +22,7 @@ if (isset($_POST['inputName']) && isset($_POST['inputEmail']) && isset($_POST['i
     //if (isset($_POST['ref'])) {
        // $mail->Body .= "\r\n\r\nRef: " . $_POST['ref'];
     //}
- $sentmail = mail('alanleonard001@gmail.com',$_POST['inputSubject'],'Hi my name is '. $_POST['inputName'] ."  ".$_POST['inputMessage'].' \n from: '.$_POST['inputEmail'],$headers,'-falanleonrd001@hotmail.com');
+ $sentmail = mail('alanleonard001@gmail.com',$_POST['inputSubject'],'Hi my name is  king'. $_POST['inputName'] ."  ".$_POST['inputMessage'].' \n from: '.$_POST['inputEmail'],$headers,'-falanleonrd001@hotmail.com');
  
  
     if(!$sentmail) {
