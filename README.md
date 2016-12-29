@@ -27,13 +27,7 @@ You can create an account yourself (as an adult) and then create an account for 
 
 
 Couple of test logins:
-Adult:	
-username - alanleonard001@gmail.com 
-password - 1234
 
-Child: 
-username - frabn@mail.com
-password - iloveme
 
 
 
